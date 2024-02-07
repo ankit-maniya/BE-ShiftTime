@@ -6,7 +6,7 @@ const app = express()
 
 /*** Customs ***/
 import { config } from './src/configs/index.js';
-import routes from './src/Routes/index.js';
+import routes from './src/routes/index.js';
 import connectDB from './src/stores/index.js';
 
 /*** Apply Middleware ***/
