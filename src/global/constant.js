@@ -1,3 +1,5 @@
+"use strict"
+
 /*** Defined Constant Values ***/
 const constant = {
     SUCCESS: "SUCCESS",

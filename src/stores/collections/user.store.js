@@ -1,3 +1,5 @@
+"use strict"
+
 /*** Third Party Packages ***/
 import moment from 'moment'
 

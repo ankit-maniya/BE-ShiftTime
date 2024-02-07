@@ -8,7 +8,7 @@ import { UserStore } from '../stores/index.js'
 import { userValidate } from '../validations/index.js'
 
 /*** Middleware ***/
-import { createAuthToken } from '../Middlewares/index.js'
+import { createAuthToken } from '../middlewares/index.js'
 import { uploadFileToStorage } from '../global/fileUploadMulter.js'
 import constant from '../global/constant.js'
 

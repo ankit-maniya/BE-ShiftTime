@@ -1,3 +1,5 @@
+"use strict"
+
 /*** Third Party Packages ***/
 import mongoose from "mongoose"
 import UserStore from "./collections/user.store.js"

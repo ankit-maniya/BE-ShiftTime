@@ -1,3 +1,4 @@
+"use strict"
 /*** Third Party Packages ***/
 import cors from 'cors';
 import morgan from 'morgan';

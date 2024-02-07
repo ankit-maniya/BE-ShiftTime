@@ -1,3 +1,5 @@
+"use strict"
+
 /*** Third Party Packages ***/
 import express from 'express';
 
@@ -5,10 +7,10 @@ import express from 'express';
 import utils from '../global/index.js'
 
 /*** Controllers ***/
-import { user } from '../Controllers/index.js'
+import { user } from '../controllers/index.js'
 
 /*** Middleware ***/
-import { me } from '../Middlewares/index.js'
+import { me } from '../middlewares/index.js'
 
 const routes = express.Router()
 

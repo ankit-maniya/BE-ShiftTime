@@ -1,3 +1,5 @@
+"use strict"
+
 import dotenv from "dotenv"
 import constant from "../global/constant.js"
 
