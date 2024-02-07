@@ -5,147 +5,187 @@ import utils from '../global/index.js'
 import { UserStore } from '../stores/index.js'
 
 /*** Validation ***/
-import { userValidate } from '../validations/index.js' 
+import { userValidate } from '../validations/index.js'
 
 /*** Middleware ***/
 import { createAuthToken } from '../Middlewares/index.js'
 import { uploadFileToStorage } from '../global/fileUploadMulter.js'
+import constant from '../global/constant.js'
 
 class UserController {
-    getAll = async (req, res) => {
-      try {
-        const { query, projection, sort } = req.query
+  getAll = async (req, res) => {
+    try {
+      const { query, projection, sort } = req.query
 
-        const users = await UserStore.getAll(query, projection, sort)
+      const users = await UserStore.getAll(query, projection, sort)
 
-        utils.sendSuccess(res, 200, users)
-      } catch (exception) {
-        utils.sendError(res, 500)(exception)
-      }
+      utils.sendSuccess(res, 200, users)
+    } catch (exception) {
+      utils.sendError(res, 500)(exception)
     }
+  }
 
-    login = async (req, res) => {
-      try {
-        const { mobile, smsCode } = req.body
+  login = async (req, res) => {
+    try {
+      const { email, password, clientId, loginWith } = req.body
 
-        const query = {
-          mobile
-        }
+      console.log(req.body);
 
-        if(!mobile) utils.throwError(404, 'error', 'Mobile number is Required!')()
-
-        if (mobile && smsCode) {
-          query.smsCode = smsCode
-        }
-
-        
-        let user = await UserStore.get(query)
-        if (!user) utils.throwError(404, 'error', `User not found in with ${mobile} number or Otp!`)()
-
-        if (mobile && !smsCode) {
-          // const sendSms = await utils.sendMobileSms(user) TODO { it's require purchase messages }
-          await UserStore.updateByWhere(query, { smsCode: 'ANTHU@£' })
-          
-          const token = await createAuthToken(user)
-
-          user = {
-            user,
-            token
-          }
-        }
-
-        utils.sendSuccess(res, 200, user)
-      } catch (exception) {
-        utils.sendError(res, 500)(exception)
+      const query = {
+        email,
+        password,
+        clientId,
+        loginWith
       }
-    }
 
-    get = async (req, res) => {
-      try {
-        const query = {
-          _id: req.params.userId
-        }
+      await userValidate.login(query)
 
-        const user = await UserStore.get(query)
-        utils.sendSuccess(res, 200, user)
-      } catch (exception) {
-        utils.sendError(res, 500)(exception)
+      const whatToFind = {
+        email,
+        password,
+        loginWith
       }
-    }
 
-    create = async (req, res) => {
-      try {
-        /*** Upload File With Multer ***/
-        await uploadFileToStorage(req, res)
+      let user = await UserStore.get(whatToFind)
+      if (!user) utils.throwError(404, constant.ERROR, `User not found in with ${email}`)()
 
-        const objectToCreate = {
-          ...req.body,
-          ...req.files,
-        }
 
-        await userValidate.create(objectToCreate)
+      const token = await createAuthToken(user)
 
-        const user = await UserStore.create(objectToCreate)
-
-        utils.sendSuccess(res, 200, user)
-      } catch (exception) {
-
-        /*** When Get Error From Validate Body Data Then Uploaded File Should Be Delete ***/
-        const files = req.files && (req.files.allImages || req.files.profileImage || [])
-
-        if (files && files.length > 0) {
-          files.forEach(file => {   
-              utils.removeFile(file)
-          })
-        }
-
-        utils.sendError(res, 500)(exception)
+      user = {
+        user,
+        token
       }
+
+      utils.sendSuccess(res, 200, user)
+    } catch (exception) {
+      utils.sendError(res, 500)(exception)
     }
+  }
 
-    update = async (req, res) => {
-      try {
-        /*** Upload File With Multer ***/
-        await uploadFileToStorage(req, res)
+  loginWithMobile = async (req, res) => {
+    try {
+      const { mobile, smsCode } = req.body
 
-        const { userId } = req.params
-
-        const whatToUpdate = {
-          ...req.body,
-          ...req.files
-        }
-
-        await userValidate.update(whatToUpdate)
-
-        await UserStore.update(userId, whatToUpdate)
-
-        utils.sendSuccess(res, 200, { message: 'User Updated Successfully!' })
-      } catch (exception) {
-
-        /*** When Get Error From Validate Body Data Then Uploaded File Should Be Delete ***/
-        const files = req.files && (req.files.allImages || req.files.profileImage || [])
-
-        if (files && files.length > 0) {
-          files.forEach(file => {   
-              utils.removeFile(file)
-          })
-        }
-
-        utils.sendError(res, 500)(exception)
+      const query = {
+        mobile
       }
-    }
 
-    delete = async (req, res) => {
-      try {
-        const { userId } = req.params
+      if (!mobile) utils.throwError(404, constant.ERROR, 'Mobile number is Required!')()
 
-        await UserStore.delete(userId)
-
-        utils.sendSuccess(res, 200, { message: 'User Deleted Successfully!' })
-      } catch (exception) {
-        utils.sendError(res, 500)(exception)
+      if (mobile && smsCode) {
+        query.smsCode = smsCode
       }
+
+
+      let user = await UserStore.get(query)
+      if (!user) utils.throwError(404, constant.ERROR, `User not found in with ${mobile} number or Otp!`)()
+
+      if (mobile && !smsCode) {
+        // const sendSms = await utils.sendMobileSms(user) TODO { it's require purchase messages }
+        await UserStore.updateByWhere(query, { smsCode: 'ANTHU@£' })
+
+        const token = await createAuthToken(user)
+
+        user = {
+          user,
+          token
+        }
+      }
+
+      utils.sendSuccess(res, 200, user)
+    } catch (exception) {
+      utils.sendError(res, 500)(exception)
     }
+  }
+
+  get = async (req, res) => {
+    try {
+      const query = {
+        _id: req.params.userId
+      }
+
+      const user = await UserStore.get(query)
+      utils.sendSuccess(res, 200, user)
+    } catch (exception) {
+      utils.sendError(res, 500)(exception)
+    }
+  }
+
+  create = async (req, res) => {
+    try {
+      /*** Upload File With Multer ***/
+      await uploadFileToStorage(req, res)
+
+      const objectToCreate = {
+        ...req.body,
+        ...req.files,
+      }
+
+
+      await userValidate.create(objectToCreate)
+
+      const user = await UserStore.create(objectToCreate)
+
+      utils.sendSuccess(res, 200, user)
+    } catch (exception) {
+
+      /*** When Get Error From Validate Body Data Then Uploaded File Should Be Delete ***/
+      const files = req.files && (req.files.allImages || req.files.profileImage || [])
+
+      if (files && files.length > 0) {
+        files.forEach(file => {
+          utils.removeFile(file)
+        })
+      }
+
+      utils.sendError(res, 500)(exception)
+    }
+  }
+
+  update = async (req, res) => {
+    try {
+      /*** Upload File With Multer ***/
+      await uploadFileToStorage(req, res)
+
+      const { userId } = req.params
+
+      const whatToUpdate = {
+        ...req.body,
+        ...req.files
+      }
+
+      await userValidate.update(whatToUpdate)
+
+      await UserStore.update(userId, whatToUpdate)
+
+      utils.sendSuccess(res, 200, { message: 'User Updated Successfully!' })
+    } catch (exception) {
+
+      /*** When Get Error From Validate Body Data Then Uploaded File Should Be Delete ***/
+      const files = req.files && (req.files.allImages || req.files.profileImage || [])
+
+      if (files && files.length > 0) {
+        files.forEach(file => {
+          utils.removeFile(file)
+        })
+      }
+
+      utils.sendError(res, 500)(exception)
+    }
+  }
+
+  delete = async (req, res) => {
+    try {
+      const { userId } = req.params
+
+      await UserStore.delete(userId)
+
+      utils.sendSuccess(res, 200, { message: 'User Deleted Successfully!' })
+    } catch (exception) {
+      utils.sendError(res, 500)(exception)
+    }
+  }
 }
 
 export default new UserController()

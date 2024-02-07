@@ -51,9 +51,9 @@ const me = async (req, res, next) => {
 */
 
 const createAuthToken = async (user, expire = '1h') => {
-  const { mobile, userName, _id, role } = user
+  const { email, userName, _id, role } = user
 
-  return await jwt.sign({ mobile, userName, _id, role }, config.JWT_SECRET, { expiresIn: expire })
+  return await jwt.sign({ email, userName, _id, role }, config.JWT_SECRET, { expiresIn: expire })
 }
 
 

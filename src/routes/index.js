@@ -18,7 +18,7 @@ routes.get('/', (req, res) => utils.sendSuccess(res, 200, { label: 'Api Working 
 /*** USER ***/
 routes.get('/users', user.getAll)
 routes.get('/users/:userId', user.get)
-routes.post('/users', user.create)
+routes.post('/users/signup', user.create)
 routes.post('/users/login', user.login)
 routes.put('/users/:userId', me, user.update)
 routes.delete('/users/:userId', me, user.delete)

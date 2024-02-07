@@ -3,9 +3,6 @@ import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate-v2'
 
 const userSchema = new mongoose.Schema({
-  userName: {
-    type: String
-  },
   firstName: {
     type: String
   },
@@ -15,6 +12,9 @@ const userSchema = new mongoose.Schema({
   status: {
     type: String,
     default: 'User'
+  },
+  clientId: {
+    type: String
   },
   stripeId: {
     type: String

@@ -1,4 +1,6 @@
 import dotenv from "dotenv"
+import constant from "../global/constant.js"
+
 dotenv.config()
 
 const {
@@ -25,10 +27,10 @@ const {
 const ADMIN_USER = {
   isActive: true,
   isDelete: false,
-  role: "ADMIN",
-  mobile: "6359006628",
+  role: constant.ADMIN,
+  mobile: "2268832602",
   name: "Admin",
-  email: "admin@admin.com",
+  email: "superadmin@admin.com",
   password: "password",
 }
 
