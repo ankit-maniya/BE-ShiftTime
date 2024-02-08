@@ -51,7 +51,7 @@ class UserController {
 
       if (!user) utils.throwError(404, constant.ERROR, `User not found in with ${email} and ${clientId}`)()
 
-      if (user.role !== role) utils.throwError(404, constant.ERROR, `User found but Role is not matched!`)()
+      // if (user.role !== role) utils.throwError(404, constant.ERROR, `User found but Role is not matched!`)()
 
       // check password match or not
       const iMatchPassword = await validatePassword(
