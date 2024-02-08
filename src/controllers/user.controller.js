@@ -17,10 +17,13 @@ class UserController {
   getAll = async (req, res) => {
     try {
       const { query, projection, sort } = req.query
+      let whatToSearch = { role: { $ne: constant.SUPERADMIN } };
 
-      const whatToSearch = {
-        ...query,
-        role: { $ne: constant.SUPERADMIN }
+      if (query) {
+        whatToSearch = {
+          ...JSON.parse(query),
+          ...whatToSearch
+        }
       }
 
       const users = await UserStore.getAll(whatToSearch, projection, sort)
@@ -143,21 +146,21 @@ class UserController {
 
       await userValidate.create(objectToCreate)
 
-      if(objectToCreate.role === constant.ADMIN) {
+      if (objectToCreate.role === constant.ADMIN) {
         objectToCreate.clientId = constant.INIT_CLIENTID;
-        
+
         const whatToFind = { role: constant.ADMIN };
         const sortBy = { _id: -1 };
-  
+
         const lastCreatedRestaurent = await UserStore.getWithSort(whatToFind, sortBy);
 
-        if(lastCreatedRestaurent.length > 0) {
+        if (lastCreatedRestaurent.length > 0) {
           const newClientId = parseInt(lastCreatedRestaurent[0].clientId) + 1;
-  
-          if(!newClientId) {
+
+          if (!newClientId) {
             utils.throwError(500, '', 'Error while generating clientId')()
           }
-    
+
           objectToCreate.clientId = newClientId;
         }
       }
