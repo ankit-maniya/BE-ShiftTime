@@ -293,6 +293,12 @@ const update = async (user) => {
     if (keys.includes('firstName') && user.firstName === '')
         throwError('firstName field is required')
 
+    if (keys.includes('emergencyContactName') && user.emergencyContactName === '')
+        throwError('emergencyContactName field is required')
+
+    if (keys.includes('emergencyContactNumber') && user.emergencyContactNumber === '')
+        throwError('emergencyContactNumber field is required')
+
     if (keys.includes('lastName') && user.lastName === '')
         throwError('lastName field is required!')
 
@@ -313,30 +319,6 @@ const update = async (user) => {
 
     if (keys.includes('age') && (!user.age || user.age <= 18))
         throwError('Age field is required Or Age should be 18+ !')
-
-    if (keys.includes('education') && !user.education)
-        throwError('education field is required')
-
-    if (keys.includes('maritalStatus') && !user.maritalStatus)
-        throwError('maritalStatus field is required')
-
-    if (keys.includes('lookingFor') && !user.lookingFor)
-        throwError('lookingFor field is required')
-
-    if (keys.includes('religion') && !user.religion)
-        throwError('religion field is required')
-
-    if (keys.includes('personality') && !user.personality)
-        throwError('personality field is required')
-
-    if (keys.includes('drinking') && !user.drinking)
-        throwError('drinking field is required')
-
-    if (keys.includes('smoking') && !user.smoking)
-        throwError('smoking field is required')
-
-    if (keys.includes('eating') && !user.eating)
-        throwError('eating field is required')
 
     if (keys.includes('location') && !user.location)
         throwError('location field is required')
