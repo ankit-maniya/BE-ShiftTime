@@ -28,14 +28,13 @@ class UserController {
 
   login = async (req, res) => {
     try {
-      const { email, password, clientId, loginWith, role } = req.body
+      const { email, password, clientId, loginWith } = req.body
 
       const query = {
         email,
         password,
         clientId,
         loginWith,
-        role
       }
 
       await userValidate.login(query)
@@ -44,9 +43,9 @@ class UserController {
         email,
       }
 
-      if (role == constant.EMPLOYEE) {
-        whatToFind.clientId = clientId
-      }
+      // if (role == constant.EMPLOYEE) {
+      //   whatToFind.clientId = clientId
+      // }
 
       let user = await UserStore.get(whatToFind);
 
@@ -148,7 +147,7 @@ class UserController {
         const lastCreatedRestaurent = await UserStore.getWithSort(whatToFind, sortBy);
 
         if(lastCreatedRestaurent.length > 0) {
-          newClientId = parseInt(lastCreatedRestaurent[0].clientId) + 1;
+          const newClientId = parseInt(lastCreatedRestaurent[0].clientId) + 1;
   
           if(!newClientId) {
             utils.throwError(500, '', 'Error while generating clientId')()

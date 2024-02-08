@@ -178,15 +178,15 @@ const login = async (user) => {
         }
     }
 
-    if (!keys.includes('role') || !user.role) {
-        throwError('role field is required!')
-    }
+    // if (!keys.includes('role') || !user.role) {
+    //     throwError('role field is required!')
+    // }
 
-    if (user.role === constant.EMPLOYEE) {
-        if (!keys.includes('clientId') || !user.clientId) {
-            throwError('clientId field is required!')
-        }
-    }
+    // if (user.role === constant.EMPLOYEE) {
+    //     if (!keys.includes('clientId') || !user.clientId) {
+    //         throwError('clientId field is required!')
+    //     }
+    // }
 }
 
 /**
