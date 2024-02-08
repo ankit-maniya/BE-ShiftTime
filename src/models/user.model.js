@@ -59,6 +59,12 @@ const userSchema = new mongoose.Schema({
   countryCode: {
     type: Number
   },
+  emergencyContactName: {
+    type: String
+  },
+  emergencyContactNumber: {
+    type: String
+  },
   profileImage: {
     type: String
   },
