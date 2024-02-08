@@ -1,5 +1,6 @@
 "use strict"
 
+import constant from '../global/constant.js'
 /*** Global ***/
 import utils from '../global/index.js'
 
@@ -26,6 +27,20 @@ const create = async (user) => {
 
     if (!keys.includes('password'))
         throwError('password field is required')
+
+    if(!keys.includes('role') || !user.role) {
+        throwError('role field is required!')
+    }
+
+    if(!constant.ROLES.includes(user.role)) {
+        throwError(`role field is required it\`s should be in ${constant.ROLES}!`)
+    }
+
+    if(user.role === constant.USER) {
+        if(!keys.includes('clientId') || !user.clientId) {
+            throwError('clientId field is required!')
+        }
+    }
 
     if (keys.includes('password')) {
         
@@ -149,26 +164,27 @@ const login = async (user) => {
     if (keys.length <= 0)
         throwError('Login Details required!')
 
-    console.log([0, 1, 2].includes(Number(user.loginWith)));
-    console.log(keys);
-
     if (!keys.includes('loginWith') || ![0, 1, 2].includes(Number(user.loginWith)))
         throwError('loginWith field is required || loginWith value should be 0, 1 or 2')
-
-    if(!keys.includes('clientId') || !user.clientId) {
-        throwError('clientId field is required!')
-    }
 
     if (keys.includes('loginWith') && Number(user.loginWith) === 0) {
         if (!keys.includes('email') || !user.email)
             throwError('Email field is required!')
 
         if (keys.includes('email')) {
-            if (!user.email) {
-                throwError('Email field is required!')
-            } else if (!validateEmail(user.email) && !validateMobile(user.email)) {
-                throwError('Email field is not valid')
+            if (!validateEmail(user.email)) {
+                throwError('Email field value is not valid')
             }
+        }
+    }
+
+    if(!keys.includes('role') || !user.role) {
+        throwError('role field is required!')
+    }
+
+    if(user.role === constant.USER) {
+        if(!keys.includes('clientId') || !user.clientId) {
+            throwError('clientId field is required!')
         }
     }
 }

@@ -3,17 +3,22 @@
 /*** Third Party Packages ***/
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate-v2'
+import bcrypt from "bcrypt"
+
+/*** Customs ***/
+import constant from '../global/constant.js'
 
 const userSchema = new mongoose.Schema({
   firstName: {
     type: String
   },
+  role: {
+    type: String,
+    enum: [constant.USER, constant.RESTAURANT, constant.ADMIN],
+    default: constant.USER
+  },
   lastName: {
     type: String
-  },
-  status: {
-    type: String,
-    default: 'User'
   },
   clientId: {
     type: String
@@ -87,6 +92,19 @@ const userSchema = new mongoose.Schema({
     default: 0
   },
 }, { timestamps: true, strict: false })
+
+userSchema.pre("save", async function () {
+  this.password = await this.generatePasswordHash()
+})
+
+userSchema.methods.generatePasswordHash = async function () {
+  const saltRounds = 10
+  return await bcrypt.hash(this.password, saltRounds)
+}
+
+export const validatePassword = async function (password, hashPassword) {
+  return await bcrypt.compare(password, hashPassword)
+}
 
 /*** Initalize Plugin For Paginate ***/
 userSchema.plugin(mongoosePaginate)

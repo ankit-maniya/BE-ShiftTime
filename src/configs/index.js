@@ -30,10 +30,14 @@ const ADMIN_USER = {
   isActive: true,
   isDelete: false,
   role: constant.ADMIN,
+  loginWith: 0,
+  firstName: "ShiftTime",
+  lastName: "Admin",
+  userName: "shifttimeAdmin",
   mobile: "2268832602",
-  name: "Admin",
-  email: "superadmin@admin.com",
-  password: "password",
+  name: "ShiftTime Admin",
+  email: "admin@shifttime.com",
+  password: "shifttime@2024",
 }
 
 export const config = {
