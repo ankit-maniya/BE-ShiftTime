@@ -39,8 +39,7 @@ const me = async (req, res, next) => {
 
     next()
   } catch (exception) {
-    
-    if(exception.message) {
+    if(exception.message === "jwt expired") {
       return utils.sendError(res, 500, `Auth Token Expired in ${exception.expiredAt}`)()
     }
 
