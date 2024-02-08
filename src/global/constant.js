@@ -7,6 +7,7 @@ const constant = {
     ADMIN: "ADMIN",
     USER: "USER",
     RESTAURANT: "RESTAURANT",
+    ROLES: ["ADMIN", "USER", "RESTAURANT"],
 }
 
 export default constant;
