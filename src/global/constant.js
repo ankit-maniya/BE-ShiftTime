@@ -12,6 +12,7 @@ const constant = {
     SILVER: "SILVER",
     GOLD: "GOLD",
     PLANS: ["TRIAL", "SILVER", "GOLD"],
+    INIT_CLIENTID: 1001
 }
 
 export default constant;
