@@ -39,6 +39,11 @@ const me = async (req, res, next) => {
 
     next()
   } catch (exception) {
+    
+    if(exception.message) {
+      return utils.sendError(res, 500, `Auth Token Expired in ${exception.expiredAt}`)()
+    }
+
     utils.sendError(res, 500, 'Error while verify Auth Token')(exception)
   }
 }
