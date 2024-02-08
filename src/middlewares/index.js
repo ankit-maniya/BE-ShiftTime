@@ -8,6 +8,7 @@ import utils from '../global/index.js'
 
 /*** Customs ***/
 import { config } from '../configs/index.js'
+import { UserStore } from '../stores/index.js'
 
 /**
   * This function is used as middleware for validate requests

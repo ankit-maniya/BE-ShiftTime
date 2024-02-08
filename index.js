@@ -8,7 +8,7 @@ const app = express()
 /*** Customs ***/
 import { config } from './src/configs/index.js';
 import routes from './src/routes/index.js';
-import connectDB from './src/stores/index.js';
+import connectDB, { UserStore } from './src/stores/index.js';
 
 /*** Apply Middleware ***/
 app.use(cors())
@@ -26,7 +26,14 @@ const startServer = async () => {
     console.log(`server start at ${config.PORT_URL}`)
 
     /*** Check Database Server Connection ***/
-    connectDB().then(() => console.log('Mongodb Connected!'))
+    connectDB().then(async () => {
+      console.log('Mongodb Connected!')
+      const foundUser = await UserStore.get({ email: config.ADMIN_USER.email })
+
+      if (!foundUser) {
+        await UserStore.create(config.ADMIN_USER)
+      }
+    })
   })
 }
 

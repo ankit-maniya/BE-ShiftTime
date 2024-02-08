@@ -11,6 +11,7 @@ import { userValidate } from '../validations/index.js'
 import { createAuthToken } from '../middlewares/index.js'
 import { uploadFileToStorage } from '../global/fileUploadMulter.js'
 import constant from '../global/constant.js'
+import { validatePassword } from '../models/user.model.js'
 
 class UserController {
   getAll = async (req, res) => {
@@ -27,28 +28,45 @@ class UserController {
 
   login = async (req, res) => {
     try {
-      const { email, password, clientId, loginWith } = req.body
-
-      console.log(req.body);
+      const { email, password, clientId, loginWith, role } = req.body
 
       const query = {
         email,
         password,
         clientId,
-        loginWith
+        loginWith,
+        role
       }
 
       await userValidate.login(query)
 
-      const whatToFind = {
+      let whatToFind = {
         email,
+      }
+
+      if(role == constant.USER) {
+        whatToFind.clientId = clientId
+      }
+
+      let user = await UserStore.get(whatToFind);
+
+      if (!user) utils.throwError(404, constant.ERROR, `User not found in with ${email} and ${clientId}`)()
+
+      whatToFind = {
+        ...whatToFind,
         password,
         loginWith
       }
 
-      let user = await UserStore.get(whatToFind)
-      if (!user) utils.throwError(404, constant.ERROR, `User not found in with ${email}`)()
+      // check password match or not
+      const iMatchPassword = await validatePassword(
+        whatToFind.password,
+        user.password
+      )
 
+      if(!iMatchPassword) {
+        utils.throwError(404, constant.ERROR, `Password not match!`)()
+      }
 
       const token = await createAuthToken(user)
 
