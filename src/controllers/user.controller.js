@@ -44,7 +44,7 @@ class UserController {
         email,
       }
 
-      if(role == constant.USER) {
+      if(role == constant.EMPLOYEE) {
         whatToFind.clientId = clientId
       }
 
@@ -52,15 +52,11 @@ class UserController {
 
       if (!user) utils.throwError(404, constant.ERROR, `User not found in with ${email} and ${clientId}`)()
 
-      whatToFind = {
-        ...whatToFind,
-        password,
-        loginWith
-      }
+      if(user.role !== role) utils.throwError(404, constant.ERROR, `User found but Role is not matched!`)()
 
       // check password match or not
       const iMatchPassword = await validatePassword(
-        whatToFind.password,
+        password,
         user.password
       )
 

@@ -14,8 +14,8 @@ const userSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: [constant.USER, constant.RESTAURANT, constant.ADMIN],
-    default: constant.USER
+    enum: [constant.SUPERADMIN, constant.ADMIN, constant.EMPLOYEE],
+    default: constant.EMPLOYEE
   },
   lastName: {
     type: String
@@ -62,10 +62,6 @@ const userSchema = new mongoose.Schema({
   profileImage: {
     type: String
   },
-  role: {
-    type: String,
-    default: 'User'
-  },
   allImages: {
     type: Array
   },
@@ -90,6 +86,17 @@ const userSchema = new mongoose.Schema({
     type: Number,
     enum: [0, 1, 2], /*** [ 0 => mobile or email, 1 => google, 2 => facebook ] ***/
     default: 0
+  },
+  isFirstTimeLogin: {
+    type: Boolean,
+    default: true
+  },
+  plan: {
+    type: String,
+    enum: [constant.TRIAL, constant.SILVER, constant.GOLD],
+  },
+  expiry: {
+    type: String,
   },
 }, { timestamps: true, strict: false })
 

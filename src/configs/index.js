@@ -29,14 +29,14 @@ const {
 const ADMIN_USER = {
   isActive: true,
   isDelete: false,
-  role: constant.ADMIN,
+  role: constant.SUPERADMIN,
   loginWith: 0,
   firstName: "ShiftTime",
-  lastName: "Admin",
-  userName: "shifttimeAdmin",
+  lastName: "Super Admin",
+  userName: "shifttime SuperAdmin",
   mobile: "2268832602",
-  name: "ShiftTime Admin",
-  email: "admin@shifttime.com",
+  name: "ShiftTime SuperAdmin",
+  email: "superadmin@shifttime.com",
   password: "shifttime@2024",
 }
 

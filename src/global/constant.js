@@ -4,10 +4,14 @@
 const constant = {
     SUCCESS: "SUCCESS",
     ERROR: "ERROR",
+    SUPERADMIN: "SUPERADMIN",
+    EMPLOYEE: "EMPLOYEE",
     ADMIN: "ADMIN",
-    USER: "USER",
-    RESTAURANT: "RESTAURANT",
-    ROLES: ["ADMIN", "USER", "RESTAURANT"],
+    ROLES: ["SUPERADMIN", "ADMIN", "EMPLOYEE"],
+    TRIAL: "TRIAL",
+    SILVER: "SILVER",
+    GOLD: "GOLD",
+    PLANS: ["TRIAL", "SILVER", "GOLD"],
 }
 
 export default constant;

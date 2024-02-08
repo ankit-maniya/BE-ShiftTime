@@ -28,27 +28,27 @@ const create = async (user) => {
     if (!keys.includes('password'))
         throwError('password field is required')
 
-    if(!keys.includes('role') || !user.role) {
+    if (!keys.includes('role') || !user.role) {
         throwError('role field is required!')
     }
 
-    if(!constant.ROLES.includes(user.role)) {
+    if (!constant.ROLES.includes(user.role)) {
         throwError(`role field is required it\`s should be in ${constant.ROLES}!`)
     }
 
-    if(user.role === constant.USER) {
-        if(!keys.includes('clientId') || !user.clientId) {
+    if (user.role === constant.EMPLOYEE) {
+        if (!keys.includes('clientId') || !user.clientId) {
             throwError('clientId field is required!')
         }
     }
 
     if (keys.includes('password')) {
-        
+
         if (user.password === '') {
             throwError('password field is required')
         }
 
-            if (user.password.length < 8) {
+        if (user.password.length < 8) {
             throwError('password Have atleast 8 character Or Not contain spaces!')
         }
     }
@@ -178,12 +178,12 @@ const login = async (user) => {
         }
     }
 
-    if(!keys.includes('role') || !user.role) {
+    if (!keys.includes('role') || !user.role) {
         throwError('role field is required!')
     }
 
-    if(user.role === constant.USER) {
-        if(!keys.includes('clientId') || !user.clientId) {
+    if (user.role === constant.EMPLOYEE) {
+        if (!keys.includes('clientId') || !user.clientId) {
             throwError('clientId field is required!')
         }
     }
