@@ -44,7 +44,7 @@ class UserController {
         email,
       }
 
-      if(role == constant.EMPLOYEE) {
+      if (role == constant.EMPLOYEE) {
         whatToFind.clientId = clientId
       }
 
@@ -52,7 +52,7 @@ class UserController {
 
       if (!user) utils.throwError(404, constant.ERROR, `User not found in with ${email} and ${clientId}`)()
 
-      if(user.role !== role) utils.throwError(404, constant.ERROR, `User found but Role is not matched!`)()
+      if (user.role !== role) utils.throwError(404, constant.ERROR, `User found but Role is not matched!`)()
 
       // check password match or not
       const iMatchPassword = await validatePassword(
@@ -60,7 +60,7 @@ class UserController {
         user.password
       )
 
-      if(!iMatchPassword) {
+      if (!iMatchPassword) {
         utils.throwError(404, constant.ERROR, `Password not match!`)()
       }
 
@@ -138,6 +138,20 @@ class UserController {
 
 
       await userValidate.create(objectToCreate)
+
+      if(objectToCreate.role === constant.ADMIN) {
+        const whatToFind = { role: "ADMIN" };
+        const sortBy = { _id: -1 };
+  
+        const lastCreatedRestaurent = await UserStore.getWithSort(whatToFind, sortBy);
+        const newClientId = parseInt(lastCreatedRestaurent[0].clientId) + 1;
+  
+        if(!newClientId) {
+          utils.throwError(500, '', 'Error while generating clientId')()
+        }
+  
+        objectToCreate.clientId = newClientId;
+      }
 
       const user = await UserStore.create(objectToCreate)
 

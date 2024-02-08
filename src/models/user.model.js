@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
     type: String
   },
   clientId: {
-    type: String
+    type: Number
   },
   stripeId: {
     type: String
