@@ -18,7 +18,12 @@ class UserController {
     try {
       const { query, projection, sort } = req.query
 
-      const users = await UserStore.getAll(query, projection, sort)
+      const whatToSearch = {
+        ...query,
+        role: { $ne: constant.SUPERADMIN }
+      }
+
+      const users = await UserStore.getAll(whatToSearch, projection, sort)
 
       utils.sendSuccess(res, 200, users)
     } catch (exception) {
