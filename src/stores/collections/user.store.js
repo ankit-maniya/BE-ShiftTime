@@ -1,78 +1,76 @@
-"use strict"
+"use strict";
 
 /*** Third Party Packages ***/
-import moment from 'moment'
+import moment from "moment";
 
 /*** Global ***/
-import utils from '../../global/index.js'
+import utils from "../../global/index.js";
 
 /*** Model Schema ***/
-import { User } from '../../models/index.js'
+import { User } from "../../models/index.js";
 
 /*** BaseModal ***/
-import BaseModal from '../base.store.js'
+import BaseModal from "../base.store.js";
 
 class UserStore extends BaseModal {
-    /*** NOTE: it's require to declare whenever you extends BaseModal ***/
-    model = User
+  /*** NOTE: it's require to declare whenever you extends BaseModal ***/
+  model = User;
 
-    getAll = async (query, projection, sort) => {
-      try {
-        return await super.getAll(query, projection, null, sort)
-      } catch (exception) {
-        utils.throwError(500, '', 'Error while getting users')(exception)
-      }
+  getAll = async (query, projection, sort) => {
+    try {
+      return await super.getAll(query, projection, null, sort);
+    } catch (exception) {
+      utils.throwError(500, "", "Error while getting users")(exception);
     }
+  };
 
-    getWithSort = async (query, sortBy) => {
-      try {
-        return await this.model.find(query).sort(sortBy);
-      } catch (exception) {
-        utils.throwError(500, '', 'Error while getting single user')(exception)
-      }
+  getWithSort = async (query, sortBy) => {
+    try {
+      return await this.model.find(query).sort(sortBy);
+    } catch (exception) {
+      utils.throwError(500, "", "Error while getting single user")(exception);
     }
+  };
 
-    get = async (query) => {
-      try {
-        return await super.get(query)
-      } catch (exception) {
-        utils.throwError(500, '', 'Error while getting single user')(exception)
-      }
+  get = async (query) => {
+    try {
+      return await super.get(query);
+    } catch (exception) {
+      utils.throwError(500, "", "Error while getting single user")(exception);
     }
+  };
 
-    create = async (objectToCreate) => {
-      try {
-
-        if (!objectToCreate.createdOn) {
-          objectToCreate.createdOn = moment().valueOf()
-        }
-
-        return await super.create(objectToCreate)
-      } catch (exception) {
-        utils.throwError(500, '', 'Error while creating user')(exception)
+  create = async (objectToCreate) => {
+    try {
+      if (!objectToCreate.createdOn) {
+        objectToCreate.createdOn = moment().valueOf();
       }
+
+      return await super.create(objectToCreate);
+    } catch (exception) {
+      utils.throwError(500, "", "Error while creating user")(exception);
     }
+  };
 
-    update = async (id, whatToUpdate, whatDoDelete) => {
-      try {
-
-        if (!whatToUpdate.updatedOn) {
-          whatToUpdate.updatedOn = moment().valueOf()
-        }
-
-        return await super.update(id, whatToUpdate, whatDoDelete)
-      } catch (exception) {
-        utils.throwError(500, '', 'Error while updating user')(exception)
+  update = async (id, whatToUpdate, whatDoDelete) => {
+    try {
+      if (!whatToUpdate.updatedOn) {
+        whatToUpdate.updatedOn = moment().valueOf();
       }
-    }
 
-    delete = async (userId) => {
-      try {
-        return await super.delete(userId)
-      } catch (exception) {
-        utils.throwError(500, '', 'Error while deleting user')(exception)
-      }
+      return await super.update(id, whatToUpdate, whatDoDelete);
+    } catch (exception) {
+      utils.throwError(500, "", "Error while updating user")(exception);
     }
+  };
+
+  delete = async (userId) => {
+    try {
+      return await super.delete(userId);
+    } catch (exception) {
+      utils.throwError(500, "", "Error while deleting user")(exception);
+    }
+  };
 }
 
-export default new UserStore()
+export default new UserStore();
