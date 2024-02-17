@@ -61,7 +61,7 @@ class AvailibilityController {
 
   update = async (req, res) => {
     try {
-      const { availabilityId } = req.params
+      const { availibilityId } = req.params
 
       const whatToUpdate = {
         ...req.body,
@@ -69,7 +69,7 @@ class AvailibilityController {
 
       // await AvailabilityValidate.update(whatToUpdate)
 
-      await AvailabilityStore.update(availabilityId, whatToUpdate)
+      await AvailabilityStore.update(availibilityId, whatToUpdate)
 
       utils.sendSuccess(res, 200, { message: 'Avalibility Updated Successfully!' })
     } catch (exception) {
