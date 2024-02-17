@@ -3,6 +3,7 @@
 /*** Third Party Packages ***/
 import mongoose from "mongoose"
 import UserStore from "./collections/user.store.js"
+import AvailabilityStore from "./collections/availability.store.js"
 
 /*** Config ***/
 import { config } from "../configs/index.js"
@@ -14,5 +15,6 @@ const connectDB = () => {
 export default connectDB
 
 export {
-    UserStore
+    UserStore,
+    AvailabilityStore
 }

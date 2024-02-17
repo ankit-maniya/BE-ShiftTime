@@ -10,14 +10,14 @@ import { config } from './src/configs/index.js';
 import routes from './src/routes/index.js';
 import connectDB, { UserStore } from './src/stores/index.js';
 
-/*** Apply Middleware ***/
-app.use(cors())
-app.use(morgan('dev'))
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static('uploads'))
-
 const startServer = async () => {
+  /*** Apply Middleware ***/
+  app.use(cors())
+  app.use(morgan('dev'))
+  app.use(express.json())
+  app.use(express.urlencoded({ extended: true }))
+  app.use(express.static('uploads'))
+
   /*** ApI Routes ***/
   app.use(routes)
 
