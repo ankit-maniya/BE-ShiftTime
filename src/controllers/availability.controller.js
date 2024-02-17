@@ -11,7 +11,7 @@ class AvailibilityController {
   getAll = async (req, res) => {
     try {
       const { query, projection, sort } = req.query
-      let whatToSearch = { isDelete: false};
+      let whatToSearch = { isDelete: false };
 
       if (query) {
         whatToSearch = {
@@ -31,8 +31,10 @@ class AvailibilityController {
   get = async (req, res) => {
     try {
       const query = {
-        _id: req.params.availabilityId
+        _id: req.params.availibilityId
       }
+
+      console.log(query);
 
       const Availability = await AvailabilityStore.get(query)
       utils.sendSuccess(res, 200, Availability)
@@ -77,9 +79,9 @@ class AvailibilityController {
 
   delete = async (req, res) => {
     try {
-      const { availabilityId } = req.params
+      const { availibilityId } = req.params
 
-      await AvailabilityStore.delete(availabilityId)
+      await AvailabilityStore.delete(availibilityId)
 
       utils.sendSuccess(res, 200, { message: 'Availability Deleted Successfully!' })
     } catch (exception) {
