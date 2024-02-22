@@ -42,14 +42,12 @@ const userSchema = new mongoose.Schema(
       enum: [constant.SUPERADMIN, constant.ADMIN, constant.EMPLOYEE],
       default: constant.EMPLOYEE,
     },
-
     stripeId: {
       type: String,
     },
     subscription: {
       type: String,
     },
-
     country: {
       type: String,
     },
