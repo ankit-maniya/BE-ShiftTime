@@ -4,6 +4,7 @@
 import mongoose from "mongoose"
 import UserStore from "./collections/user.store.js"
 import AvailabilityStore from "./collections/availability.store.js"
+import WorkroleStore from "./collections/workrole.store.js"
 
 /*** Config ***/
 import { config } from "../configs/index.js"
@@ -16,5 +17,6 @@ export default connectDB
 
 export {
     UserStore,
-    AvailabilityStore
+    AvailabilityStore,
+    WorkroleStore
 }
