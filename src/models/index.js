@@ -8,5 +8,5 @@ import Category from "./category.model.js"
 export {
     User,
     Availability,
-    CategoryStore
+    Category
 }
