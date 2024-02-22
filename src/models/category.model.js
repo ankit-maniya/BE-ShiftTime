@@ -4,13 +4,14 @@
 import mongoose from 'mongoose'
 import mongoosePaginate from 'mongoose-paginate-v2'
 
-const workroleSchema = new mongoose.Schema({
+const categorySchema = new mongoose.Schema({
     clientId: {
         type: Number,
         required: true
     },
-    role: {
-        type: String, required: true
+    category: {
+        type: String,
+        required: true
     },
     createdOn: {
         type: Number
@@ -29,8 +30,8 @@ const workroleSchema = new mongoose.Schema({
 }, { timestamps: true, strict: false })
 
 /*** Initalize Plugin For Paginate ***/
-workroleSchema.plugin(mongoosePaginate)
+categorySchema.plugin(mongoosePaginate)
 
-const Workrole = mongoose.model('Workrole', workroleSchema)
+const Category = mongoose.model('Category', categorySchema)
 
-export default Workrole
+export default Category

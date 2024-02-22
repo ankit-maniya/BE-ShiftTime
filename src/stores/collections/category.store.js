@@ -7,20 +7,20 @@ import moment from "moment";
 import utils from "../../global/index.js";
 
 /*** Model Schema ***/
-import { Workrole } from "../../models/index.js";
+import { Category } from "../../models/index.js";
 
 /*** BaseModal ***/
 import BaseModal from "../base.store.js";
 
-class WorkroleStore extends BaseModal {
+class CategoryStore extends BaseModal {
   /*** NOTE: it's require to declare whenever you extends BaseModal ***/
-  model = Workrole;
+  model = Category;
 
   getAll = async (query, projection, sort) => {
     try {
       return await super.getAll(query, projection, null, sort);
     } catch (exception) {
-      utils.throwError(500, "", "Error while getting Workrole")(exception);
+      utils.throwError(500, "", "Error while getting Category")(exception);
     }
   };
 
@@ -28,7 +28,7 @@ class WorkroleStore extends BaseModal {
     try {
       return await this.model.find(query).sort(sortBy);
     } catch (exception) {
-      utils.throwError(500, "", "Error while getting single Workrole")(exception);
+      utils.throwError(500, "", "Error while getting single Category")(exception);
     }
   };
 
@@ -36,7 +36,7 @@ class WorkroleStore extends BaseModal {
     try {
       return await super.get(query);
     } catch (exception) {
-      utils.throwError(500, "", "Error while getting single Workrole")(exception);
+      utils.throwError(500, "", "Error while getting single Category")(exception);
     }
   };
 
@@ -48,7 +48,7 @@ class WorkroleStore extends BaseModal {
 
       return await super.create(objectToCreate);
     } catch (exception) {
-      utils.throwError(500, "", "Error while creating Workrole")(exception);
+      utils.throwError(500, "", "Error while creating Category")(exception);
     }
   };
 
@@ -60,17 +60,17 @@ class WorkroleStore extends BaseModal {
 
       return await super.update(id, whatToUpdate, whatDoDelete);
     } catch (exception) {
-      utils.throwError(500, "", "Error while updating Workrole")(exception);
+      utils.throwError(500, "", "Error while updating Category")(exception);
     }
   };
 
-  delete = async (WorkroleId) => {
+  delete = async (categoryId) => {
     try {
-      return await super.delete(WorkroleId);
+      return await super.delete(categoryId);
     } catch (exception) {
-      utils.throwError(500, "", "Error while deleting Workrole")(exception);
+      utils.throwError(500, "", "Error while deleting Category")(exception);
     }
   };
 }
 
-export default new WorkroleStore();
+export default new CategoryStore();

@@ -2,12 +2,12 @@
 import utils from '../global/index.js'
 
 /*** Store ***/
-import { WorkroleStore } from '../stores/index.js'
+import { CategoryStore } from '../stores/index.js'
 
 /*** Validation ***/
-// import { WorkroleValidate } from '../validations/index.js'
+// import { CategoryValidate } from '../validations/index.js'
 
-class WorkroleController {
+class CategoryController {
   getAll = async (req, res) => {
     try {
       const { query, projection, sort } = req.query
@@ -20,9 +20,9 @@ class WorkroleController {
         }
       }
 
-      const Workroles = await WorkroleStore.getAll(whatToSearch, projection, sort)
+      const Categorys = await CategoryStore.getAll(whatToSearch, projection, sort)
 
-      utils.sendSuccess(res, 200, Workroles)
+      utils.sendSuccess(res, 200, Categorys)
     } catch (exception) {
       utils.sendError(res, 500)(exception)
     }
@@ -31,13 +31,13 @@ class WorkroleController {
   get = async (req, res) => {
     try {
       const query = {
-        _id: req.params.workroleId
+        _id: req.params.categoryId
       }
 
       console.log(query);
 
-      const Workrole = await WorkroleStore.get(query)
-      utils.sendSuccess(res, 200, Workrole)
+      const Category = await CategoryStore.get(query)
+      utils.sendSuccess(res, 200, Category)
     } catch (exception) {
       utils.sendError(res, 500)(exception)
     }
@@ -49,11 +49,11 @@ class WorkroleController {
         ...req.body,
       }
 
-      // await WorkroleValidate.create(objectToCreate)
+      // await CategoryValidate.create(objectToCreate)
 
-      const Workrole = await WorkroleStore.create(objectToCreate)
+      const Category = await CategoryStore.create(objectToCreate)
 
-      utils.sendSuccess(res, 200, Workrole)
+      utils.sendSuccess(res, 200, Category)
     } catch (exception) {
       utils.sendError(res, 500)(exception)
     }
@@ -61,17 +61,17 @@ class WorkroleController {
 
   update = async (req, res) => {
     try {
-      const { workroleId } = req.params
+      const { categoryId } = req.params
 
       const whatToUpdate = {
         ...req.body,
       }
 
-      // await WorkroleValidate.update(whatToUpdate)
+      // await CategoryValidate.update(whatToUpdate)
 
-      await WorkroleStore.update(workroleId, whatToUpdate)
+      await CategoryStore.update(categoryId, whatToUpdate)
 
-      utils.sendSuccess(res, 200, { message: 'Workrole Updated Successfully!' })
+      utils.sendSuccess(res, 200, { message: 'Category Updated Successfully!' })
     } catch (exception) {
       utils.sendError(res, 500)(exception)
     }
@@ -79,15 +79,15 @@ class WorkroleController {
 
   delete = async (req, res) => {
     try {
-      const { workroleId } = req.params
+      const { categoryId } = req.params
 
-      await WorkroleStore.delete(workroleId)
+      await CategoryStore.delete(categoryId)
 
-      utils.sendSuccess(res, 200, { message: 'Workrole Deleted Successfully!' })
+      utils.sendSuccess(res, 200, { message: 'Category Deleted Successfully!' })
     } catch (exception) {
       utils.sendError(res, 500)(exception)
     }
   }
 }
 
-export default new WorkroleController()
+export default new CategoryController()
