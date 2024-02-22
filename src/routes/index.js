@@ -7,7 +7,7 @@ import express from 'express';
 import utils from '../global/index.js'
 
 /*** Controllers ***/
-import { user, availability } from '../controllers/index.js'
+import { user, availability, workrole } from '../controllers/index.js'
 
 /*** Middleware ***/
 import { me } from '../middlewares/index.js'
@@ -42,5 +42,12 @@ routes.get('/availability/:availibilityId', availability.get)
 routes.post('/availability/create', availability.create)
 routes.put('/availability/:availibilityId', me, availability.update)
 routes.delete('/availability/:availibilityId', me, availability.delete)
+
+/*** CATEGORY ***/
+routes.get('/work-role', workrole.getAll)
+routes.get('/work-role/:workroleId', workrole.get)
+routes.post('/work-role/create', workrole.create)
+routes.put('/work-role/:workroleId', me, workrole.update)
+routes.delete('/work-role/:workroleId', me, workrole.delete)
 
 export default routes
