@@ -1,12 +1,12 @@
-"use strict"
+"use strict";
 
 /*** Third Party Packages ***/
-import mongoose from 'mongoose'
-import mongoosePaginate from 'mongoose-paginate-v2'
-import bcrypt from "bcrypt"
+import mongoose from "mongoose";
+import mongoosePaginate from "mongoose-paginate-v2";
+import bcrypt from "bcrypt";
 
 /*** Customs ***/
-import constant from '../global/constant.js'
+import constant from "../global/constant.js";
 
 const userSchema = new mongoose.Schema(
   {
@@ -41,6 +41,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: [constant.SUPERADMIN, constant.ADMIN, constant.EMPLOYEE],
       default: constant.EMPLOYEE,
+    },
+    category: {
+      type: String,
     },
     stripeId: {
       type: String,
@@ -115,21 +118,21 @@ const userSchema = new mongoose.Schema(
 );
 
 userSchema.pre("save", async function () {
-  this.password = await this.generatePasswordHash()
-})
+  this.password = await this.generatePasswordHash();
+});
 
 userSchema.methods.generatePasswordHash = async function () {
-  const saltRounds = 10
-  return await bcrypt.hash(this.password, saltRounds)
-}
+  const saltRounds = 10;
+  return await bcrypt.hash(this.password, saltRounds);
+};
 
 export const validatePassword = async function (password, hashPassword) {
-  return await bcrypt.compare(password, hashPassword)
-}
+  return await bcrypt.compare(password, hashPassword);
+};
 
 /*** Initalize Plugin For Paginate ***/
-userSchema.plugin(mongoosePaginate)
+userSchema.plugin(mongoosePaginate);
 
-const User = mongoose.model('User', userSchema)
+const User = mongoose.model("User", userSchema);
 
-export default User
+export default User;
