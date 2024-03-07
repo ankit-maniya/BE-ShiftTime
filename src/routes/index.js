@@ -7,7 +7,7 @@ import express from 'express';
 import utils from '../global/index.js'
 
 /*** Controllers ***/
-import { user, availability, category } from '../controllers/index.js'
+import { user, availability, category, bookoff } from '../controllers/index.js'
 
 /*** Middleware ***/
 import { me } from '../middlewares/index.js'
@@ -49,5 +49,12 @@ routes.get('/category/:categoryId', category.get)
 routes.post('/category/create', category.create)
 routes.put('/category/:categoryId', me, category.update)
 routes.delete('/category/:categoryId', me, category.delete)
+
+/*** BOOK-OFF ***/
+routes.get('/bookoff', bookoff.getAll)
+routes.get('/bookoff/:bookOffId', bookoff.get)
+routes.post('/bookoff/create', bookoff.create)
+routes.put('/bookoff/:bookOffId', me, bookoff.update)
+routes.delete('/bookoff/:bookOffId', me, bookoff.delete)
 
 export default routes
