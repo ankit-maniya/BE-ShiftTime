@@ -4,9 +4,11 @@
 import user from "../controllers/user.controller.js";
 import availability from "../controllers/availability.controller.js";
 import category from "../controllers/category.controller.js";
+import bookoff from "../controllers/bookoff.controller.js";
 
 export {
     user,
     availability,
-    category
+    category,
+    bookoff
 }
