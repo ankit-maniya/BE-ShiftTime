@@ -13,16 +13,19 @@ const availibilitySchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    clientId: {
+        type: Number,
+    },
     availibilityDetails: [
         {
             day_of_week: {
-                type: String, enum: constant.DAY_OF_WEEK_ENUM, required: true
+                type: String, enum: constant.DAY_OF_WEEK_ENUM
             },
             start_time: {
-                type: String, maxlength: 100, required: true
+                type: String, maxlength: 100
             },
             end_time: {
-                type: String, maxlength: 100, required: true
+                type: String, maxlength: 100
             },
             availability_type: {
                 type: String, enum: constant.AVAILABILITY_TYPE
