@@ -19,10 +19,16 @@ class UserController {
       const { query, projection, sort } = req.query
       let whatToSearch = { role: { $ne: constant.SUPERADMIN } };
 
-      if (query) {
+      if(JSON.parse(query)?.role) {
         whatToSearch = {
           ...JSON.parse(query),
-          ...whatToSearch
+        }
+      } else {
+        if (query) {
+          whatToSearch = {
+            ...JSON.parse(query),
+            ...whatToSearch
+          }
         }
       }
 
