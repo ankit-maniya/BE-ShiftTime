@@ -31,6 +31,10 @@ const shiftSchema = new mongoose.Schema({
     updatedOn: {
         type: Number
     },
+    isPublised: {
+        type: Boolean,
+        default: false
+    },
     isApproved: {
         type: Boolean,
         default: false
