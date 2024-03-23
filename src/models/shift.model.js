@@ -10,6 +10,9 @@ const shiftSchema = new mongoose.Schema({
         ref: 'User',
         required: true
     },
+    appointmentId: {
+        type: String,
+    },
     clientId: {
         type: Number,
     },
