@@ -15,15 +15,16 @@ class EmailService {
     }
 
     sendMail = async (mailOptions) => {
-        const { from, to, subject, text } = mailOptions;
+        const { from, to, subject, text, html } = mailOptions;
         const info = await this.transporter.sendMail({
-            from: from, // sender address
-            to: to, // list of receivers
-            subject: subject, // Subject line
-            text: text, // plain text body
+            from, // sender address
+            to, // list of receivers
+            subject, // Subject line
+            text, // plain text body
+            html
         });
 
-        console.log("mail send successfully!", info);
+        console.log("<======== mail send successfully! ==========>");
     }
 }
 
