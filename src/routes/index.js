@@ -7,7 +7,7 @@ import express from 'express';
 import utils from '../global/index.js'
 
 /*** Controllers ***/
-import { user, availability, category, bookoff, shift } from '../controllers/index.js'
+import { user, availability, category, bookoff, shift, email } from '../controllers/index.js'
 
 /*** Middleware ***/
 import { me } from '../middlewares/index.js'
@@ -17,16 +17,6 @@ const routes = express.Router()
 
 /*** TEST ***/
 routes.get('/', (req, res) => utils.sendSuccess(res, 200, { label: 'Api Working Fine!!' }))
-// routes.get('/test', async (req, res) => {
-//     await EmailService.sendMail({
-//         from: 'Amaniya4606@conestogac.on.ca',
-//         to: 'pratikboghani1@gmail.com',
-//         subject: 'Otp 9999',
-//         text: 'This is a test email OTP is 9999'
-//     })
-
-//     utils.sendSuccess(res, 200, { label: 'Api Working Fine!!' })
-// })
 
 /*** USER ***/
 routes.get('/users', user.getAll)
@@ -63,5 +53,10 @@ routes.get('/shift/:shiftId', shift.get)
 routes.post('/shift/create', shift.create)
 routes.put('/shift/:shiftId', me, shift.update)
 routes.delete('/shift/:shiftId', me, shift.delete)
+
+/*** EMAIL ***/
+routes.post('/email/shiftcreated', email.sendShiftCreatedEmail)
+routes.post('/email/bookoffupdate', email.sendBookOffStatusChangedEmail)
+routes.post('/email/availabilityupdate', email.sendAvailabilityStatusChangedEmail)
 
 export default routes
