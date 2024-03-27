@@ -49,6 +49,8 @@ routes.delete('/bookoff/:bookOffId', me, bookoff.delete)
 
 /*** SHIFT ***/
 routes.get('/shift', shift.getAll)
+routes.get('/shift/datewise', shift.getAllShiftsForDate)
+routes.get('/shift/weekwise', shift.getAllShiftsForWeek)
 routes.get('/shift/:shiftId', shift.get)
 routes.post('/shift/create', shift.create)
 routes.put('/shift/:shiftId', me, shift.update)

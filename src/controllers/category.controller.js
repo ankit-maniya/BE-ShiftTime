@@ -34,8 +34,6 @@ class CategoryController {
         _id: req.params.categoryId
       }
 
-      console.log(query);
-
       const Category = await CategoryStore.get(query)
       utils.sendSuccess(res, 200, Category)
     } catch (exception) {

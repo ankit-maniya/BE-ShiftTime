@@ -34,8 +34,6 @@ class AvailibilityController {
         _id: req.params.availibilityId
       }
 
-      console.log(query);
-
       const Availability = await AvailabilityStore.get(query)
       utils.sendSuccess(res, 200, Availability)
     } catch (exception) {

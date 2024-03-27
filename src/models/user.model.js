@@ -42,6 +42,10 @@ const userSchema = new mongoose.Schema(
       enum: [constant.SUPERADMIN, constant.ADMIN, constant.EMPLOYEE],
       default: constant.EMPLOYEE,
     },
+    workRole: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Category',
+    },
     category: {
       type: String,
     },
@@ -54,14 +58,12 @@ const userSchema = new mongoose.Schema(
     country: {
       type: String,
     },
-
     height: {
       type: String,
     },
     weight: {
       type: String,
     },
-
     age: {
       type: Number,
     },
@@ -71,7 +73,6 @@ const userSchema = new mongoose.Schema(
     countryCode: {
       type: Number,
     },
-
     profileImage: {
       type: String,
     },

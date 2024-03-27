@@ -17,13 +17,13 @@ const shiftSchema = new mongoose.Schema({
         type: Number,
     },
     start_date: {
-        type: String, maxlength: 100
+        type: Date, default: new Date()
     },
     end_date: {
-        type: String, maxlength: 100
+        type: Date, default: new Date()
     },
     duration: {
-        type: String
+        type: Number,
     },
     notes: {
         type: String,

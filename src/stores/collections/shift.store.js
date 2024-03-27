@@ -16,6 +16,14 @@ class ShiftStore extends BaseModal {
   /*** NOTE: it's require to declare whenever you extends BaseModal ***/
   model = Shift;
 
+  getAllByAggregate = async (aggregate) => {
+    try {
+      return await this.model.aggregate(aggregate);
+    } catch (exception) {
+      utils.throwError(500, "", `Error while getting ${this.modal}`)(exception);
+    }
+  }
+
   getAll = async (query, projection, sort) => {
     try {
       return await super.getAll(query, projection, null, sort);

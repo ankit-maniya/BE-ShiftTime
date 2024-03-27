@@ -34,8 +34,6 @@ class BookOffController {
         _id: req.params.bookOffId
       }
 
-      console.log(query);
-
       const BookOff = await BookOffStore.get(query)
       utils.sendSuccess(res, 200, BookOff)
     } catch (exception) {
