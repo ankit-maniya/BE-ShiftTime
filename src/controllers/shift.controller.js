@@ -179,6 +179,105 @@ class ShiftController {
     }
   }
 
+  getAllShiftsForEmployee = async (req, res) => {
+    try {
+      // const startDate = req.query.startDate;
+      const endDate = req.query.endDate;
+      const userId = req.query.userId;
+
+      const whatToMatch = {
+        $match: {
+          start_date: {
+            $gt: new Date()
+          },
+          end_date: {
+            $lte: new Date(endDate)
+          },
+          userId: utils.ObjectId(userId),
+          isPublised: true
+        }
+      }
+
+      const wrokRoleLookUp = {
+        $lookup: {
+          from: 'categories',
+          localField: 'workRole',
+          foreignField: '_id',
+          as: 'workRole'
+        }
+      }
+
+      const usersLookUp = {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          pipeline: [
+            wrokRoleLookUp,
+            {
+              $unwind: '$workRole'
+            }
+          ],
+          as: 'user'
+        }
+      }
+
+      const aggregate = [];
+
+      if (whatToMatch) {
+        aggregate.push(whatToMatch);
+      }
+
+      if (usersLookUp) {
+        aggregate.push(usersLookUp);
+        aggregate.push({ $unwind: '$user' });
+      }
+
+      aggregate.push({
+        $project: {
+          _id : 1,
+          clientId : 1,
+          start_date : 1,
+          end_date : 1,
+          duration : 1,
+          isPublised : 1,
+          isApproved : 1,
+          user : 1,
+      }
+      })
+
+      const groupByEmployee = {
+        $group: {
+          _id: "$start_date",
+          shifts: {
+            $push: {
+              firstName: "$user.firstName",
+              start_date: "$start_date",
+              end_date: "$end_date",
+              duration: "$duration",
+              isPublised: "$isPublised",
+              notes: "$notes",
+              _id: "$_id"
+            }
+          }
+        }
+      }
+
+      aggregate.push(groupByEmployee);
+
+      aggregate.push({
+        $sort: {
+          _id: 1
+        }
+      });
+
+      const data = await ShiftStore.getAllByAggregate(aggregate);
+      utils.sendSuccess(res, 200, data)
+    } catch (exception) {
+      utils.sendError(res, 500)(exception)
+    }
+  }
+
   getAll = async (req, res) => {
     try {
       const { query, projection, sort } = req.query
