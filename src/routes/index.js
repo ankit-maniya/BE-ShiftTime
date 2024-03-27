@@ -61,5 +61,6 @@ routes.delete('/shift/:shiftId', me, shift.delete)
 routes.post('/email/shiftcreated', email.sendShiftCreatedEmail)
 routes.post('/email/bookoffupdate', email.sendBookOffStatusChangedEmail)
 routes.post('/email/availabilityupdate', email.sendAvailabilityStatusChangedEmail)
+routes.post('/email/sentshiftdetails', email.sendShiftListToEmployee)
 
 export default routes

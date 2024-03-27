@@ -26,7 +26,7 @@ class ShiftStore extends BaseModal {
 
   getAll = async (query, projection, sort) => {
     try {
-      return await super.getAll(query, projection, null, sort);
+      return await super.getAll(query, projection, null, sort, null, 100);
     } catch (exception) {
       utils.throwError(500, "", "Error while getting Shift")(exception);
     }
@@ -36,7 +36,7 @@ class ShiftStore extends BaseModal {
     try {
       return await this.model.find(query).sort(sortBy);
     } catch (exception) {
-      utils.throwError(500, "", "Error while getting single Shift")(exception);
+      utils.throwError(500, "", "Error while getting single Shift")(  exception);
     }
   };
 
