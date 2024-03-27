@@ -5,13 +5,15 @@ import utils from '../global/index.js'
 import { ShiftStore } from '../stores/index.js'
 
 /*** Validation ***/
-// import { ShiftValidate } from '../validations/index.js'
+import { shiftValidate } from '../validations/index.js'
 
 class ShiftController {
   getAllShiftsForDate = async (req, res) => {
     try {
-      const startDate = req.query.startDate;
-      const endDate = req.query.endDate;
+
+      await shiftValidate.create(req.query);
+
+      const { startDate, endDate } = req.query;
 
       const whatToMatch = {
         $match: {
@@ -86,8 +88,10 @@ class ShiftController {
 
   getAllShiftsForWeek = async (req, res) => {
     try {
-      const startDate = req.query.startDate;
-      const endDate = req.query.endDate;
+
+      await shiftValidate.create(req.query);
+
+      const { startDate, endDate } = req.query;
 
       const whatToMatch = {
         $match: {
@@ -182,8 +186,10 @@ class ShiftController {
   getAllShiftsForEmployee = async (req, res) => {
     try {
       // const startDate = req.query.startDate;
-      const endDate = req.query.endDate;
-      const userId = req.query.userId;
+      
+      await shiftValidate.employeeWise(req.query);
+
+      const { endDate, userId } = req.query;
 
       const whatToMatch = {
         $match: {
@@ -235,15 +241,15 @@ class ShiftController {
 
       aggregate.push({
         $project: {
-          _id : 1,
-          clientId : 1,
-          start_date : 1,
-          end_date : 1,
-          duration : 1,
-          isPublised : 1,
-          isApproved : 1,
-          user : 1,
-      }
+          _id: 1,
+          clientId: 1,
+          start_date: 1,
+          end_date: 1,
+          duration: 1,
+          isPublised: 1,
+          isApproved: 1,
+          user: 1,
+        }
       })
 
       const groupByEmployee = {
@@ -320,11 +326,11 @@ class ShiftController {
       // await ShiftValidate.create(objectToCreate)
 
       if (objectToCreate.start_date) {
-        objectToCreate.start_date = objectToCreate.start_date;
+        objectToCreate.start_date = new Date(objectToCreate.start_date);
       }
 
       if (objectToCreate.end_date) {
-        objectToCreate.end_date = objectToCreate.end_date;
+        objectToCreate.end_date = new Date(objectToCreate.end_date);
       }
 
       const Shift = await ShiftStore.create(objectToCreate)
