@@ -1,7 +1,7 @@
 class EmailTempletes {
     createShiftIsCreatedEmail = async ({ info }) => {
         const description = info?.description || "This is Description Area For Shift";
-        const title = info?.title || "Shift Has Been Created!";
+        const title = info?.subject || "Shift Has Been Created!";
 
         return `
         <html>

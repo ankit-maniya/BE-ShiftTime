@@ -31,8 +31,8 @@ class EmailController {
 
     sendShiftCreatedEmail = async (req, res) => {
         try {
-            const { reciverEmail, subject } = req.body
-            const html = await EmailTempletes.createShiftIsCreatedEmail({});
+            const { reciverEmail, subject, description } = req.body
+            const html = await EmailTempletes.createShiftIsCreatedEmail({ info: { subject, description }});
 
             await EmailService.sendMail({
                 from: config.EMAIL_USER,
