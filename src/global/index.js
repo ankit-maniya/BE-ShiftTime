@@ -6,6 +6,7 @@ import path from 'path'
 
 /*** Custom Modules ***/
 import constant from './constant.js'
+import mongoose from 'mongoose'
 
 /**
   * This function is used for Send Success Response
@@ -105,10 +106,15 @@ const removeFile = (file) => {
   })
 }
 
+const ObjectId = (id) => {
+  return new mongoose.Types.ObjectId(id);
+}
+
 export default {
   sendSuccess,
   sendError,
   throwError,
   generateCode,
-  removeFile
+  removeFile,
+  ObjectId
 }
