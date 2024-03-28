@@ -147,8 +147,8 @@ class EmailController {
 
                 await EmailService.sendMail({
                     from: config.EMAIL_USER,
-                    to: "ankitmaniya7450@gmail.com",
-                    // to: employee._id.email,
+                    // to: "ankitmaniya7450@gmail.com",
+                    to: employee._id.email,
                     subject: `${employee._id.firstName} Shifts`,
                     html
                 })
