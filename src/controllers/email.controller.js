@@ -140,14 +140,13 @@ class EmailController {
 
             for (let i = 0; i < data.length; i++) {
                 const employee = data[i];
-                const title = `${employee._id.firstName}, This week shifts!`;
+                const title = `${employee._id.firstName}'s shifts From ${new Date(startDate).toLocaleDateString('en-GB')} To ${new Date(endDate).toLocaleDateString('en-GB')}!`;
                 emails.push(employee._id.email);
 
-                const html = await EmailTempletes.createShiftListToEmployeeEmail({ info: { title, shifts: employee.shifts } });
-
+                const html = await EmailTempletes.createShiftListToEmployeeEmail({ info: { title, name: employee._id.firstName, shifts: employee.shifts, startDate, endDate } });
                 await EmailService.sendMail({
                     from: config.EMAIL_USER,
-                    // to: "ankitmaniya7450@gmail.com",
+                    // to: "pratikboghani1@gmail.com,ankitmaniya7450@gmail.com",
                     to: employee._id.email,
                     subject: `${employee._id.firstName} Shifts`,
                     html

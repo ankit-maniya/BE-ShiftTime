@@ -110,11 +110,43 @@ const ObjectId = (id) => {
   return new mongoose.Types.ObjectId(id);
 }
 
+const getShiftsByWeekday = (shifts) => {
+  const weekdays = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+  const shiftsByWeekday = {};
+
+  shifts.forEach(shift => {
+      const weekday = new Date(shift.start_date).toLocaleDateString('en-US', { weekday: 'long' });
+      
+      if (!shiftsByWeekday[weekday]) {
+          shiftsByWeekday[weekday] = [];
+      }
+      shiftsByWeekday[weekday].push(shift);
+  });
+
+  const data = weekdays.map(weekday => shiftsByWeekday[weekday] || [])
+  return data;
+}
+
+function getDatesBetween(startDate, endDate) {
+  const dates = [];
+  let currentDate = new Date(startDate);
+
+  while (currentDate <= new Date(endDate)) {
+      dates.push(new Date(currentDate).toISOString().split('T')[0]);
+      currentDate.setDate(currentDate.getDate() + 1);
+  }
+
+  return dates;
+}
+
+
 export default {
   sendSuccess,
   sendError,
   throwError,
   generateCode,
   removeFile,
-  ObjectId
+  ObjectId,
+  getShiftsByWeekday,
+  getDatesBetween
 }

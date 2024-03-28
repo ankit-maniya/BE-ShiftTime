@@ -1,3 +1,5 @@
+import utils from "../global/index.js";
+
 class EmailTempletes {
     createShiftIsCreatedEmail = async ({ info }) => {
         const description = info?.description || "This is Description Area For Shift";
@@ -80,7 +82,10 @@ class EmailTempletes {
     }
 
     createShiftListToEmployeeEmail = async ({ info }) => {
-        const title = info?.title || "Shift Has Been Created!";
+        const name = info?.name;
+        const startDate = info?.startDate;
+        const endDate = info?.endDate;
+        const title = info?.title || `${name}'s shifts From ${new Date(startDate).toLocaleDateString('en-GB')} To ${new Date(endDate).toLocaleDateString('en-GB')}!`;
         const shifts = info?.shifts || [];
 
         return `
@@ -123,7 +128,7 @@ class EmailTempletes {
                     <table role="presentation" style="width:100%;border:none;border-spacing:0;">
                     <tr>
                         <td align="center" style="padding:0;">
-                        <table role="presentation" style="width:94%;max-width:600px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;">
+                        <table role="presentation" style="width:94%;max-width:660px;border:none;border-spacing:0;text-align:left;font-family:Arial,sans-serif;font-size:16px;line-height:22px;color:#363636;">
                             <tr>
                             <td style="padding:40px 30px 30px 30px;text-align:center;font-size:24px;font-weight:bold;">
                                 <a href="https://firebasestorage.googleapis.com/v0/b/jaybhagvati-b46f5.appspot.com/o/logo.png?alt=media&token=75e8f46e-c856-4fab-b09d-3ab551eb8f64" style="text-decoration:none;"><img src="https://firebasestorage.googleapis.com/v0/b/jaybhagvati-b46f5.appspot.com/o/logo.png?alt=media&token=75e8f46e-c856-4fab-b09d-3ab551eb8f64" width="165" alt="ShiftTime" style="width:165px;max-width:80%;height:auto;border:none;text-decoration:none;color:#ffffff;"></a>
@@ -141,20 +146,40 @@ class EmailTempletes {
                             </tr>
                             <tr>
                             <td style="padding:30px;background-color:#ffffff;">
-                                <p style="margin:0;">
-                                    <div class="shifts-container">
-                                        ${shifts.map(shift => `
-                                            <div class="shift-item">
-                                                <h4>Shift ${shift.firstName}</h4>
-                                                <p><strong>Start Date:</strong> ${new Date(shift.start_date).toLocaleDateString()}</p>
-                                                <p><strong>Start Time:</strong> ${new Date(shift.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                                <p><strong>End Time:</strong> ${new Date(shift.end_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
-                                                <p><strong>Duration:</strong> ${shift.duration} hours</p>
-                                                ${shift?.notes ? `<p><strong>Notes:</strong> ${shift?.notes || ""}</p>` : ''}
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                </p>
+                                <table border="1" style="width:100%; border-collapse: collapse;">
+                                <thead>
+                                    <tr align="center">
+                                        <th align="center">Monday</th>
+                                        <th align="center">Tuesday</th>
+                                        <th align="center">Wednesday</th>
+                                        <th align="center">Thursday</th>
+                                        <th align="center">Friday</th>
+                                        <th align="center">Saturday</th>
+                                        <th align="center">Sunday</th>
+                                    </tr>
+                                    <tr>
+                                        ${utils.getDatesBetween(startDate, endDate).map(date => `<th align="center" style="padding:4px;">${new Date(date).toLocaleDateString('en-GB')}</th>`).join('')}
+                                    </tr>
+                                </thead>
+                                <tbody class="shifts-container">
+                                    <tr>
+                                    
+                                        ${utils.getShiftsByWeekday(shifts).map((weekdayShifts, i) => `
+                                                <td align="center">
+                                                    ${['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'].map((weekday, idx) => `
+                                                        
+                                                            ${(i == idx) && weekdayShifts?.map(shift => `
+                                                                <div class="shift-item">
+                                                                    <span>${new Date(shift.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} <br/> to <br/>${new Date(shift.end_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span><br/>${shift.duration} hours
+                                                                    </div>
+                                                            `).join('') || ""}
+                                                        
+                                                    `).join('') || " - "}
+                                                </td>
+                                        `).join('') || " - "}
+                                    </tr>
+                                </tbody>
+                            </table>
                             </td>
                             </tr>
                             <tr>
