@@ -26,7 +26,7 @@ class UserStore extends BaseModal {
 
   getWithSort = async (query, sortBy) => {
     try {
-      return await this.model.find(query).sort(sortBy);
+      return await this.model.findOne(query).sort(sortBy);
     } catch (exception) {
       utils.throwError(500, "", "Error while getting single user")(exception);
     }

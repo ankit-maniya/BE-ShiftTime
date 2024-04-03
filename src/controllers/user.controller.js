@@ -155,13 +155,17 @@ class UserController {
       if (objectToCreate.role === constant.ADMIN) {
         objectToCreate.clientId = constant.INIT_CLIENTID;
 
-        const whatToFind = { role: constant.ADMIN };
+        const whatToFind = { role: constant.ADMIN, clientId: { $exists: true } };
         const sortBy = { _id: -1 };
 
         const lastCreatedRestaurent = await UserStore.getWithSort(whatToFind, sortBy);
 
-        if (lastCreatedRestaurent.length > 0) {
-          const newClientId = parseInt(lastCreatedRestaurent[0].clientId) + 1;
+        console.log(lastCreatedRestaurent);
+
+        if (lastCreatedRestaurent) {
+          const newClientId = parseInt(lastCreatedRestaurent.clientId) + 1;
+
+          console.log(newClientId);
 
           if (!newClientId) {
             utils.throwError(500, '', 'Error while generating clientId')()
