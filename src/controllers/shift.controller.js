@@ -86,6 +86,85 @@ class ShiftController {
     }
   }
 
+  getAllShiftsScheduleForDate = async (req, res) => {
+    try {
+
+      await shiftValidate.create(req.query);
+
+      const { startDate, endDate } = req.query;
+
+      const whatToMatch = {
+        $match: {
+          start_date: {
+            $gte: new Date(startDate),
+          },
+          end_date: {
+            $lte: new Date(endDate)
+          },
+          isPublised: true
+        }
+      }
+
+      const wrokRoleLookUp = {
+        $lookup: {
+          from: 'categories',
+          localField: 'workRole',
+          foreignField: '_id',
+          as: 'workRole'
+        }
+      }
+
+      const usersLookUp = {
+        $lookup: {
+          from: 'users',
+          localField: 'userId',
+          foreignField: '_id',
+          pipeline: [
+            wrokRoleLookUp,
+            {
+              $unwind: '$workRole'
+            }
+          ],
+          as: 'user'
+        }
+      }
+
+      const aggregate = [];
+
+      if (whatToMatch) {
+        aggregate.push(whatToMatch);
+      }
+
+      if (usersLookUp) {
+        aggregate.push(usersLookUp);
+        aggregate.push({ $unwind: '$user' });
+      }
+
+      const groupByWorkingRole = {
+        $group: {
+          _id: "$user.workRole.category",
+          employees: {
+            $push: {
+              _id: "$_id",
+              firstName: "$user.firstName",
+              start_date: "$start_date",
+              end_date: "$end_date",
+              duration: "$duration",
+              notes: "$notes"
+            }
+          }
+        }
+      }
+
+      aggregate.push(groupByWorkingRole);
+
+      const data = await ShiftStore.getAllByAggregate(aggregate);
+      utils.sendSuccess(res, 200, data)
+    } catch (exception) {
+      utils.sendError(res, 500)(exception)
+    }
+  }
+
   getAllShiftsForWeek = async (req, res) => {
     try {
 
@@ -100,7 +179,8 @@ class ShiftController {
           },
           end_date: {
             $lte: new Date(endDate)
-          }
+          },
+          isPublised: true
         }
       }
 
