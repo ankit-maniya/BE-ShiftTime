@@ -25,6 +25,9 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
     },
+    defaultPassword: {
+      type: String,
+    },
     birthdate: {
       type: String,
     },
