@@ -7,6 +7,7 @@ import category from "../controllers/category.controller.js";
 import bookoff from "../controllers/bookoff.controller.js";
 import shift from "../controllers/shift.controller.js";
 import email from "../controllers/email.controller.js";
+import stripe from "../controllers/stripe.controller.js";
 
 export {
     user,
@@ -14,5 +15,6 @@ export {
     category,
     bookoff,
     shift,
-    email
+    email,
+    stripe
 }

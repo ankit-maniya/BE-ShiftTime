@@ -7,11 +7,10 @@ import express from 'express';
 import utils from '../global/index.js'
 
 /*** Controllers ***/
-import { user, availability, category, bookoff, shift, email } from '../controllers/index.js'
+import { user, availability, category, bookoff, shift, email, stripe } from '../controllers/index.js'
 
 /*** Middleware ***/
 import { me } from '../middlewares/index.js'
-import EmailService from '../global/EmailService.js';
 
 const routes = express.Router()
 
@@ -63,5 +62,10 @@ routes.post('/email/shiftcreated', email.sendShiftCreatedEmail)
 routes.post('/email/bookoffupdate', email.sendBookOffStatusChangedEmail)
 routes.post('/email/availabilityupdate', email.sendAvailabilityStatusChangedEmail)
 routes.post('/email/sentshiftdetails', email.sendShiftListToEmployee)
+
+/*** STRIPE ***/
+routes.get('/stripe/products', stripe.getAllProducts)
+routes.post('/stripe/checkout', stripe.checkoutProduct)
+routes.post('/stripe/customer', stripe.createCustomer)
 
 export default routes

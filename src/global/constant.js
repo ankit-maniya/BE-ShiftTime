@@ -15,6 +15,10 @@ const constant = {
     INIT_CLIENTID: 1001,
     DAY_OF_WEEK_ENUM: ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'],
     AVAILABILITY_TYPE: ['AVAILABLE', 'UNAVAILABLE'],
+    PAYMENT_MODE: {
+        SUBSCRIPTION: "subscription",
+        PAYMENT: "payment"
+    }
 }
 
 export default constant;
