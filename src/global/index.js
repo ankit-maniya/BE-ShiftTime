@@ -19,12 +19,12 @@ import mongoose from 'mongoose'
 
 const sendSuccess = (res, status = 200, response) => {
   res.status(status)
-  .header('Content-Type', 'application/json', 'access-control-allow-origin', '*')
-  .send({
-    response: (response || {}),
-    message: 'Data Fetched!',
-    type: constant.SUCCESS
-  })
+    .header('Content-Type', 'application/json', 'access-control-allow-origin', '*')
+    .send({
+      response: (response || {}),
+      message: 'Data Fetched!',
+      type: constant.SUCCESS
+    })
 }
 
 /**
@@ -47,10 +47,10 @@ const sendError = (res, status = 500, message = '') => (error) => {
   if (error) {
     data.message = (error.message || error)
   }
-  
+
   res.status(status)
-  .header('Content-Type', 'application/json', 'access-control-allow-origin', '*')
-  .send(data)
+    .header('Content-Type', 'application/json', 'access-control-allow-origin', '*')
+    .send(data)
 }
 
 
@@ -81,15 +81,15 @@ const throwError = (code, errorType, errorMessage) => (error) => {
 */
 
 const generateCode = (length = 6) => {
-  let result           = ''
-  const characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+  let result = ''
+  const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
   const charactersLength = characters.length
 
-  for ( let i = 0; i < length; i++ ) {
+  for (let i = 0; i < length; i++) {
     result += characters.charAt(Math.floor(Math.random() * charactersLength))
   }
 
- return result
+  return result
 }
 
 
@@ -115,12 +115,12 @@ const getShiftsByWeekday = (shifts) => {
   const shiftsByWeekday = {};
 
   shifts.forEach(shift => {
-      const weekday = new Date(shift.start_date).toLocaleDateString('en-US', { weekday: 'long' });
-      
-      if (!shiftsByWeekday[weekday]) {
-          shiftsByWeekday[weekday] = [];
-      }
-      shiftsByWeekday[weekday].push(shift);
+    const weekday = new Date(shift.start_date).toLocaleDateString('en-US', { weekday: 'long' });
+
+    if (!shiftsByWeekday[weekday]) {
+      shiftsByWeekday[weekday] = [];
+    }
+    shiftsByWeekday[weekday].push(shift);
   });
 
   const data = weekdays.map(weekday => shiftsByWeekday[weekday] || [])
@@ -132,13 +132,35 @@ function getDatesBetween(startDate, endDate) {
   let currentDate = new Date(startDate);
 
   while (currentDate <= new Date(endDate)) {
-      dates.push(new Date(currentDate).toISOString().split('T')[0]);
-      currentDate.setDate(currentDate.getDate() + 1);
+    dates.push(new Date(currentDate).toISOString().split('T')[0]);
+    currentDate.setDate(currentDate.getDate() + 1);
   }
 
   return dates;
 }
 
+
+const modifySubscriptionRespons = async (subscriptions) => {
+  return subscriptions.data.map((sub) => {
+    return {
+      id: sub.id,
+      created: sub.created,
+      currency: sub.currency,
+      current_period_start: sub.current_period_start,
+      current_period_end: sub.current_period_end,
+      latest_invoice: sub.latest_invoice,
+      purchased_items: (sub?.items?.data || []).map((item) => {
+        return {
+          id: item.id,
+          created: item.created,
+          plan: item.plan.id,
+          quantity: item.quantity,
+          price: item.price,
+        }
+      }),
+    }
+  });
+}
 
 export default {
   sendSuccess,
@@ -148,5 +170,6 @@ export default {
   removeFile,
   ObjectId,
   getShiftsByWeekday,
-  getDatesBetween
+  getDatesBetween,
+  modifySubscriptionRespons
 }

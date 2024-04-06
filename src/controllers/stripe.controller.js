@@ -1,10 +1,12 @@
 "use strict"
 
+import constant from '../global/constant.js';
 /*** Global ***/
 import utils from '../global/index.js'
+import { createAuthToken } from '../middlewares/index.js';
 
 /*** Middleware ***/
-import { StripeStore } from '../stores/index.js';
+import { StripeStore, UserStore } from '../stores/index.js';
 import { stripeValidate } from '../validations/index.js';
 
 class StripeController {
@@ -26,28 +28,11 @@ class StripeController {
 
       const { customerId } = req.query;
 
-      const subscriptions = await StripeStore.getAllSubscriptionsOfCustomer(customerId);
+      let subscriptions = await StripeStore.getAllSubscriptionsOfCustomer(customerId);
+      subscriptions = await utils.modifySubscriptionRespons(subscriptions);
 
       const finalResponse = {
-        subscriptions: subscriptions.data.map((sub) => {
-          return {
-            id: sub.id,
-            created: sub.created,
-            currency: sub.currency,
-            current_period_start: sub.current_period_start,
-            current_period_end: sub.current_period_end,
-            latest_invoice: sub.latest_invoice,
-            purchased_items: (sub?.items?.data || []).map((item) => {
-              return {
-                id: item.id,
-                created: item.created,
-                plan: item.plan.id,
-                quantity: item.quantity,
-                price: item.price,
-              }
-            }),
-          }
-        }),
+        subscriptions
       }
 
       utils.sendSuccess(res, 200, finalResponse)
@@ -92,15 +77,41 @@ class StripeController {
     try {
 
       await stripeValidate.checkoutProduct(req.body);
-      const { priceId, quantity, customer } = req.body;
 
+      const { priceId, quantity, createStripeCustomerId } = req.body;
+      let customer = req.body?.customer;
+
+      // if createStripeCustomerId is true then create customer in stripe
+      if (createStripeCustomerId) {
+        const query = {
+          _id: customer
+        }
+
+        const user = await UserStore.get(query);
+        const { firstName, lastName, email, address = "" } = user;
+        const name = `${firstName} ${lastName}`;
+
+        if (user) {
+          const whatToCreate = {
+            name,
+            email,
+            address,
+          }
+
+          const stripeCustomer = await StripeStore.createCustomer(whatToCreate);
+          await UserStore.updateByWhere(query, { stripeCustomerId: stripeCustomer.id })
+          customer = stripeCustomer.id;
+        }
+      }
+
+      // once we have customer id then we can checkout the product
       const whatToCheckOut = {
         priceId,
         quantity,
         customer,
       }
 
-      const returnUri = req.headers.origin;
+      const returnUri = constant.STRIPE_RETURN_URL;
 
       const checkoutSessionUri = await StripeStore.checkoutProduct(whatToCheckOut, returnUri);
       utils.sendSuccess(res, 200, checkoutSessionUri)
@@ -125,6 +136,39 @@ class StripeController {
       console.log(whatToCreate);
       const customer = await StripeStore.createCustomer(whatToCreate);
       utils.sendSuccess(res, 200, customer)
+    } catch (exception) {
+      utils.sendError(res, 500)(exception)
+    }
+  }
+
+  getCurrentActivePlanOfCustomer = async (req, res) => {
+    try {
+
+      await stripeValidate.getCurrentActivePlanOfCustomer(req.query);
+
+      const { customerId } = req.query;
+
+      let user = await UserStore.get({ _id: customerId });
+
+
+      if (!user) utils.throwError(404, constant.ERROR, `User not found with Id: ${customerId}`)()
+      const token = await createAuthToken(user)
+
+      let activePlan = {};
+      if (user.stripeCustomerId) {
+        let subscriptions = await StripeStore.getAllSubscriptionsOfCustomer(user.stripeCustomerId);
+        subscriptions = await utils.modifySubscriptionRespons(subscriptions);
+
+        activePlan = (subscriptions?.data || [])?.find((subscription) => subscription.status === constant.STATUS.ACTIVE) || {};
+      }
+
+      user = {
+        user,
+        activePlan,
+        token
+      }
+
+      utils.sendSuccess(res, 200, user)
     } catch (exception) {
       utils.sendError(res, 500)(exception)
     }

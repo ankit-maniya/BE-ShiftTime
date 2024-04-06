@@ -2,7 +2,7 @@
 import utils from '../global/index.js'
 
 /*** Store ***/
-import { UserStore } from '../stores/index.js'
+import { StripeStore, UserStore } from '../stores/index.js'
 
 /*** Validation ***/
 import { userValidate } from '../validations/index.js'
@@ -19,7 +19,7 @@ class UserController {
       const { query, projection, sort } = req.query
       let whatToSearch = { role: { $ne: constant.SUPERADMIN } };
 
-      if(query && JSON.parse(query)?.role) {
+      if (query && JSON.parse(query)?.role) {
         whatToSearch = {
           ...JSON.parse(query),
         }
@@ -79,8 +79,16 @@ class UserController {
 
       const token = await createAuthToken(user)
 
+      let activePlan = {};
+
+      if (user?.stripeCustomerId) {
+        const subscriptions = await StripeStore.getAllSubscriptionsOfCustomer(user.stripeCustomerId);
+        activePlan = (subscriptions?.data || [])?.find((subscription) => subscription.status === constant.STATUS.ACTIVE) || {};
+      }
+
       user = {
         user,
+        activePlan,
         token
       }
 

@@ -109,6 +109,27 @@ const getAllInvoicesOfCustomer = async (customer) => {
 }
 
 /**
+  * This function is used for validate query params
+  * @function getCurrentActivePlanOfCustomer
+  * @param { Object } customer customer's details
+  * @returns { Boolean } return the meta for customer validatation
+*/
+
+const getCurrentActivePlanOfCustomer = async (customer) => {
+    const keys = Object.keys(customer)
+
+    if (keys.length < 1)
+        throwError('customerId field is required!')
+
+    if (!keys.includes('customerId')) {
+        throwError('customerId field is required!')
+    }
+
+    if (keys.includes('customerId') && customer.customerId == '')
+        throwError('customerId field shold not be empty!')
+}
+
+/**
   * This function is used for throw error
   * Note: used for only this page for throw error
   * @function throwError
@@ -124,5 +145,6 @@ export default {
     createCustomer,
     checkoutProduct,
     getAllSubscriptionsOfCustomer,
-    getAllInvoicesOfCustomer
+    getAllInvoicesOfCustomer,
+    getCurrentActivePlanOfCustomer
 }
