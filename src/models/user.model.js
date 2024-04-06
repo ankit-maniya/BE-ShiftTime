@@ -117,6 +117,9 @@ const userSchema = new mongoose.Schema(
     expiry: {
       type: String,
     },
+    stripeCustomerId: {
+      type: String,
+    },
   },
   { timestamps: true, strict: false }
 );
