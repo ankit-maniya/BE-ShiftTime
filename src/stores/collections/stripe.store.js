@@ -28,6 +28,19 @@ class StripeStore {
         }
     };
 
+    getAllSubscriptionsOfCustomer = async (customerId) => {
+        try {
+            const subscriptions = await this.stripeRef.subscriptions.list({
+                limit: 3,
+                customer: customerId,
+            });
+
+            return subscriptions;
+        } catch (exception) {
+            utils.throwError(500, "", "Error while getting Stripe Subscriptions")(exception);
+        }
+    };
+
     checkoutProduct = async (whatToCheckOut, returnUri) => {
         try {
             const session = await this.stripeRef.checkout.sessions.create({

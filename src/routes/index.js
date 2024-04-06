@@ -65,6 +65,7 @@ routes.post('/email/sentshiftdetails', email.sendShiftListToEmployee)
 
 /*** STRIPE ***/
 routes.get('/stripe/products', stripe.getAllProducts)
+routes.get('/stripe/customer/subscriptions', stripe.getAllSubscriptionsOfCustomer)
 routes.post('/stripe/checkout', stripe.checkoutProduct)
 routes.post('/stripe/customer', stripe.createCustomer)
 
