@@ -23,7 +23,7 @@ class BaseModal {
     * @returns { Object } return the meta for pagination
   */
 
-  async getAll(query = {}, projection, populate, sort, paginationOption, limit) {
+  async getAll(query = {}, projection, populate, sort, paginationOption, limit=100) {
     try {
       let options = {}
 
