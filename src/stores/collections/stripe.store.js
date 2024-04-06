@@ -38,6 +38,7 @@ class StripeStore {
                         quantity: whatToCheckOut.quantity,
                     },
                 ],
+                customer: whatToCheckOut.customer,
                 mode: constant.PAYMENT_MODE.SUBSCRIPTION,
                 success_url: `${returnUri}/?success=true`,
                 cancel_url: `${returnUri}/?canceled=true`,

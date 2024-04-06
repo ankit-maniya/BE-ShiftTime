@@ -5,6 +5,7 @@ import utils from '../global/index.js'
 
 /*** Middleware ***/
 import { StripeStore } from '../stores/index.js';
+import { stripeValidate } from '../validations/index.js';
 
 class StripeController {
   getAllProducts = async (req, res) => {
@@ -20,9 +21,13 @@ class StripeController {
 
   checkoutProduct = async (req, res) => {
     try {
+
+      await stripeValidate.checkoutProduct(req.body);
+
       const whatToCheckOut = {
         priceId: req.body.priceId,
         quantity: req.body.quantity,
+        customer: req.body.customer,
       }
 
       const returnUri = req.headers.origin;
@@ -36,6 +41,9 @@ class StripeController {
 
   createCustomer = async (req, res) => {
     try {
+
+      await stripeValidate.createCustomer(req.body);
+
       const whatToCreate = {
         name: req.body.name,
         email: req.body.email,
