@@ -56,6 +56,38 @@ class StripeController {
     }
   }
 
+  getAllInvoicesOfCustomer = async (req, res) => {
+    try {
+
+      await stripeValidate.getAllInvoicesOfCustomer(req.query);
+
+      const { customerId } = req.query;
+
+      const invoices = await StripeStore.getAllInvoicesOfCustomer(customerId);
+
+      const finalResponse = {
+        invoices: invoices.data.map((invoice) => {
+          return {
+            id: invoice.id,
+            created: invoice.created,
+            currency: invoice.currency,
+            invoice_pdf: invoice.invoice_pdf,
+            number: invoice.number,
+            paid: invoice.paid,
+            period_end: invoice.period_end,
+            period_start: invoice.period_start,
+            status: invoice.status,
+            subtotal: invoice.subtotal
+          }
+        }),
+      }
+
+      utils.sendSuccess(res, 200, finalResponse)
+    } catch (exception) {
+      utils.sendError(res, 500)(exception)
+    }
+  }
+
   checkoutProduct = async (req, res) => {
     try {
 

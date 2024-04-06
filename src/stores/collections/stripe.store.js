@@ -41,6 +41,19 @@ class StripeStore {
         }
     };
 
+    getAllInvoicesOfCustomer = async (customerId) => {
+        try {
+            const invoices = await this.stripeRef.invoices.list({
+                limit: 10,
+                customer: customerId,
+            });
+
+            return invoices;
+        } catch (exception) {
+            utils.throwError(500, "", "Error while getting Stripe Invoices")(exception);
+        }
+    };
+
     checkoutProduct = async (whatToCheckOut, returnUri) => {
         try {
             const session = await this.stripeRef.checkout.sessions.create({
