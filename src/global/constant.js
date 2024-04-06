@@ -2,6 +2,9 @@
 
 /*** Defined Constant Values ***/
 const constant = {
+    STATUS: {
+        ACTIVE: "active",
+    },
     SUCCESS: "SUCCESS",
     ERROR: "ERROR",
     SUPERADMIN: "SUPERADMIN",
@@ -18,7 +21,8 @@ const constant = {
     PAYMENT_MODE: {
         SUBSCRIPTION: "subscription",
         PAYMENT: "payment"
-    }
+    },
+    STRIPE_RETURN_URL: "http://localhost:3001/subscription",
 }
 
 export default constant;
