@@ -44,7 +44,7 @@ const checkoutProduct = async (checkout) => {
     const keys = Object.keys(checkout)
 
     if (keys.length < 3)
-        throwError('priceId, customer & quantity fields are required!')
+        throwError('priceId, customerId & quantity fields are required!')
 
     if (!keys.includes('priceId')) {
         throwError('priceId field is required!')
@@ -53,14 +53,14 @@ const checkoutProduct = async (checkout) => {
     if (!keys.includes('quantity'))
         throwError('quantity field is required!')
 
-    if (!keys.includes('customer'))
+    if (!keys.includes('customerId'))
         throwError('customer field is required!')
 
     if (keys.includes('priceId') && checkout.priceId == '')
         throwError('priceId field shold not be empty!')
 
-    if (keys.includes('customer') && checkout.customer == '')
-        throwError('customer field shold not be empty!')
+    if (keys.includes('customerId') && checkout.customerId == '')
+        throwError('customerId field shold not be empty!')
 
     if (keys.includes('quantity') && checkout.quantity == 0)
         throwError('quantity field shold not be 0!')

@@ -78,20 +78,24 @@ class StripeController {
 
       await stripeValidate.checkoutProduct(req.body);
 
-      const { priceId, quantity, createStripeCustomerId } = req.body;
-      let customer = req.body?.customer;
+      const { priceId, quantity, customerId } = req.body;
 
-      // if createStripeCustomerId is true then create customer in stripe
-      if (createStripeCustomerId) {
-        const query = {
-          _id: customer
-        }
+      const query = {
+        _id: customerId
+      }
 
-        const user = await UserStore.get(query);
-        const { firstName, lastName, email, address = "" } = user;
+      const user = await UserStore.get(query);
+
+      if(!user) {
+        utils.throwError(404, constant.ERROR, `User not found with Id: ${customerId}`)()
+      }
+
+      const { firstName, lastName, email, address = "" } = user;
+      let stripeCustomerId = user?.stripeCustomerId || "";
+
+      if (!stripeCustomerId) {
         const name = `${firstName} ${lastName}`;
 
-        if (user) {
           const whatToCreate = {
             name,
             email,
@@ -100,15 +104,14 @@ class StripeController {
 
           const stripeCustomer = await StripeStore.createCustomer(whatToCreate);
           await UserStore.updateByWhere(query, { stripeCustomerId: stripeCustomer.id })
-          customer = stripeCustomer.id;
-        }
+          stripeCustomerId = stripeCustomer.id;
       }
 
-      // once we have customer id then we can checkout the product
+      // once we have stripe Customer Id then we can checkout the product
       const whatToCheckOut = {
         priceId,
         quantity,
-        customer,
+        customer: stripeCustomerId,
       }
 
       const returnUri = constant.STRIPE_RETURN_URL;
