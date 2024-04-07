@@ -7,7 +7,7 @@ import express from 'express';
 import utils from '../global/index.js'
 
 /*** Controllers ***/
-import { user, availability, category, bookoff, shift, email, stripe } from '../controllers/index.js'
+import { user, availability, category, bookoff, shift, email, stripe, conversation } from '../controllers/index.js'
 
 /*** Middleware ***/
 import { me } from '../middlewares/index.js'
@@ -70,5 +70,12 @@ routes.get('/stripe/customer/invoices', stripe.getAllInvoicesOfCustomer)
 routes.get('/stripe/customer/activeplan', stripe.getCurrentActivePlanOfCustomer)
 routes.post('/stripe/checkout', stripe.checkoutProduct)
 routes.post('/stripe/customer', stripe.createCustomer)
+
+/*** CONVERSATION ***/
+routes.get('/conversation', conversation.getAll)
+routes.get('/conversation/:conversationId', conversation.get)
+routes.post('/conversation/create', conversation.create)
+routes.put('/conversation/:conversationId', me, conversation.update)
+routes.delete('/conversation/:conversationId', me, conversation.delete)
 
 export default routes
