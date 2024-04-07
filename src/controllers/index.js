@@ -8,6 +8,7 @@ import bookoff from "../controllers/bookoff.controller.js";
 import shift from "../controllers/shift.controller.js";
 import email from "../controllers/email.controller.js";
 import stripe from "../controllers/stripe.controller.js";
+import conversation from "../controllers/conversation.controller.js";
 
 export {
     user,
@@ -16,5 +17,6 @@ export {
     bookoff,
     shift,
     email,
-    stripe
+    stripe,
+    conversation
 }
