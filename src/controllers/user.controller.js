@@ -82,8 +82,10 @@ class UserController {
       let activePlan = {};
 
       if (user?.stripeCustomerId) {
-        const subscriptions = await StripeStore.getAllSubscriptionsOfCustomer(user.stripeCustomerId);
-        activePlan = (subscriptions?.data || [])?.find((subscription) => subscription.status === constant.STATUS.ACTIVE) || {};
+        let subscriptions = await StripeStore.getAllSubscriptionsOfCustomer(user.stripeCustomerId);
+        subscriptions = await utils.modifySubscriptionRespons(subscriptions);
+
+        activePlan = (subscriptions || [])?.find((subscription) => subscription.status === constant.STATUS.ACTIVE) || {};
       }
 
       user = {

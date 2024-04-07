@@ -153,7 +153,6 @@ class StripeController {
 
       let user = await UserStore.get({ _id: customerId });
 
-
       if (!user) utils.throwError(404, constant.ERROR, `User not found with Id: ${customerId}`)()
       const token = await createAuthToken(user)
 
@@ -162,7 +161,7 @@ class StripeController {
         let subscriptions = await StripeStore.getAllSubscriptionsOfCustomer(user.stripeCustomerId);
         subscriptions = await utils.modifySubscriptionRespons(subscriptions);
 
-        activePlan = (subscriptions?.data || [])?.find((subscription) => subscription.status === constant.STATUS.ACTIVE) || {};
+        activePlan = (subscriptions || [])?.find((subscription) => subscription.status === constant.STATUS.ACTIVE) || {};
       }
 
       user = {
