@@ -150,6 +150,7 @@ const modifySubscriptionRespons = async (subscriptions) => {
       current_period_end: sub.current_period_end,
       latest_invoice: sub.latest_invoice,
       status: sub.status,
+      plan: sub.plan,
       purchased_items: (sub?.items?.data || []).map((item) => {
         return {
           id: item.id,
