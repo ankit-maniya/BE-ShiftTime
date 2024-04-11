@@ -170,7 +170,7 @@ class EmailTempletes {
                                                         
                                                             ${(i == idx) && weekdayShifts?.map(shift => `
                                                                 <div class="shift-item">
-                                                                    <span>${new Date(shift.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} <br/> to <br/>${new Date(shift.end_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span><br/>${shift.duration} hours
+                                                                    <span>${new Date(shift.start_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} <br/> to <br/>${new Date(shift.end_date).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span><br/>${shift?.duration ? shift.duration / 60 : shift.duration } hours
                                                                     </div>
                                                             `).join('') || ""}
                                                         

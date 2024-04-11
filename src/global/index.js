@@ -129,10 +129,10 @@ const getShiftsByWeekday = (shifts) => {
 
 function getDatesBetween(startDate, endDate) {
   const dates = [];
-  let currentDate = new Date(startDate);
+  let currentDate = new Date(startDate).toLocaleDateString('en-GB');
 
   while (currentDate <= new Date(endDate)) {
-    dates.push(new Date(currentDate).toISOString().split('T')[0]);
+    dates.push(new Date(currentDate).toLocaleDateString('en-GB'))
     currentDate.setDate(currentDate.getDate() + 1);
   }
 
