@@ -175,6 +175,15 @@ class StripeController {
       utils.sendError(res, 500)(exception)
     }
   }
+
+  gatBalance = async (req, res) => {
+    try {
+      const balance = await StripeStore.getBalance();
+      utils.sendSuccess(res, 200, balance)
+    } catch (exception) {
+      utils.sendError(res, 500)(exception)
+    }
+  }
 }
 
 export default new StripeController()

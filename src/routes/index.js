@@ -78,4 +78,7 @@ routes.post('/conversation/create', conversation.create)
 routes.put('/conversation/:conversationId', me, conversation.update)
 routes.delete('/conversation/:conversationId', me, conversation.delete)
 
+/*** REPORT ***/
+routes.get('/stripe/balance', stripe.gatBalance);
+
 export default routes

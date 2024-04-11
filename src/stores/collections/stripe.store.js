@@ -84,6 +84,15 @@ class StripeStore {
             utils.throwError(500, "", "Error while generating checkout uri")(exception);
         }
     };
+
+    getBalance = async () => {
+        try {
+            const balance = await this.stripeRef.balance.retrieve();
+            return balance;
+        } catch (exception) {
+            utils.throwError(500, "", "Error while getting Stripe Balance")(exception);
+        }
+    }
 }
 
 export default new StripeStore();
