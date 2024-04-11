@@ -2,7 +2,7 @@
 import utils from '../global/index.js'
 
 /*** Store ***/
-import { StripeStore, UserStore } from '../stores/index.js'
+import { CategoryStore, StripeStore, UserStore } from '../stores/index.js'
 
 /*** Validation ***/
 import { userValidate } from '../validations/index.js'
@@ -159,7 +159,6 @@ class UserController {
         ...req.files,
       }
 
-
       await userValidate.create(objectToCreate)
 
       if (objectToCreate.role === constant.ADMIN) {
@@ -185,7 +184,15 @@ class UserController {
         }
       }
 
-      const user = await UserStore.create(objectToCreate)
+      let user = await UserStore.create(objectToCreate)
+
+      if (user) {
+        const categoryDetails = await CategoryStore.create({ category: 'Manager', clientId: user.clientId });
+        if (categoryDetails) {
+          await UserStore.update(user._id, { category: categoryDetails.category, workRole: categoryDetails._id})
+          user.category = categoryDetails.category;
+        }
+      }
 
       utils.sendSuccess(res, 200, user)
     } catch (exception) {
@@ -215,7 +222,7 @@ class UserController {
         ...req.files
       }
 
-      await userValidate.update(whatToUpdate)
+      await userValidate.update(whatToUpdate, userId)
 
       await UserStore.update(userId, whatToUpdate)
 

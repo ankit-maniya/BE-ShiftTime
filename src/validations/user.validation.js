@@ -222,7 +222,7 @@ const loginWithMobile = async (user) => {
   * @returns { Boolean } return the meta for user validatation
 */
 
-const update = async (user) => {
+const update = async (user, currUserId) => {
     const keys = Object.keys(user)
 
     if (keys.length <= 0)
@@ -249,18 +249,18 @@ const update = async (user) => {
             throwError('userName field is required')
         }
 
-        if (user.userName.length < 10) {
-            throwError('Usernames Have atleast 10 character Or Not contain spaces!')
+        if (user.userName.length < 8) {
+            throwError('Usernames Have atleast 8 character Or Not contain spaces!')
         }
 
-        if (validateUserName(user.userName)) {
-            throwError('Usernames can only have: Lowercase Letters(a-z), Numbers(0-9), Dots(.), Underscores(_), dashe(-)')
-        }
+        // if (validateUserName(user.userName)) {
+        //     throwError('Usernames can only have: Lowercase Letters(a-z), Numbers(0-9), Dots(.), Underscores(_), dashe(-)')
+        // }
 
         try {
             const userExists = await UserStore.get({ userName: user.userName })
 
-            if (userExists) {
+            if (userExists && userExists._id.toString() !== currUserId.toString()){
                 throwError('UserName is Already Exists!')
             }
         } catch (error) {
