@@ -155,6 +155,8 @@ class EmailController {
 
             utils.sendSuccess(res, 200, { message: 'Email sent successfully!', emails })
         } catch (exception) {
+
+            console.log("Email :: ", exception);
             utils.sendError(res, 500)(exception)
         }
     }
