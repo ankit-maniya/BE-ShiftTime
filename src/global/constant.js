@@ -22,7 +22,7 @@ const constant = {
         SUBSCRIPTION: "subscription",
         PAYMENT: "payment"
     },
-    STRIPE_RETURN_URL: "http://localhost:3001/subscription",
+    STRIPE_RETURN_URL: "https://shifttime.vercel.app/subscription",
 }
 
 export default constant;
